@@ -1,13 +1,14 @@
 import { z } from 'zod'
 import { DomainModelInterface} from '../../../types/DomainModelInterface'
+import { ObjectId } from 'bson'
 
 export const productSchema = z.object({
-    id: z.string().uuid().optional(),
+    id: z.string().refine((id => ObjectId.isValid(id))),
     title: z.string(),
     price: z.number(),
     image: z.string().url(),
     description: z.string(),
-    categoryId: z.string().uuid(),
+    categoryId: z.string().refine((id => ObjectId.isValid(id))),
     createdAt: z.date().optional()
 })
 

@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import { DomainModelInterface } from '../../../types/DomainModelInterface'
+import { ObjectId } from 'bson'
 
 const categorySchema = z.object({
-    id: z.string().uuid(),
+    id: z.string().refine((id => ObjectId.isValid(id))),
     title: z.string()
 })
 
