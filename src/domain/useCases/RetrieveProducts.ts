@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import type UseCase from '../../../types/UseCaseInterface'
 import type {PresenterInterface} from '../../../types/PresenterInterface'
-import type {ReadRepositoryInterface} from '../../../types/RepositoryInterface'
-import type { Product, ProductDtoType } from '../models/Product'
+import type { Product } from '../models/Product'
+import ProductRepository from '../../application/repositories/ProductRepository'
 
 export const retrieveProductsUseCaseQuerySchema = z.object({
     categoryid: z.string().uuid().optional(),
@@ -14,7 +14,7 @@ export type retrieveProductsUseCaseQueryInterface = z.infer<typeof retrieveProdu
 
 export class RetrieveProducts<OutputType> implements UseCase<retrieveProductsUseCaseQueryInterface> {
     constructor(
-        private productRepository:ReadRepositoryInterface<Product, ProductDtoType>, 
+        private productRepository:ProductRepository,
         private presenter: PresenterInterface<Product[], OutputType>
     ){}
 
@@ -24,12 +24,16 @@ export class RetrieveProducts<OutputType> implements UseCase<retrieveProductsUse
             where: {
                 categoryId: validQuery.categoryid
             },
-            limit: validQuery.limit,
+            take: validQuery.limit,
             orderBy: {
                 createdAt: validQuery.sort
+            },
+            include: {
+                category: {
+                    select: {title: true}
+                }
             }
         })
-
         return this.presenter.present(responses)
     }
 }

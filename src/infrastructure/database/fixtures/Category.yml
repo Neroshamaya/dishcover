@@ -1,0 +1,8 @@
+entity: category
+items:
+  category1:
+    title: 'Promotions'
+  category2:
+    title: 'Hottest'
+  category3:
+    title: 'Spring'

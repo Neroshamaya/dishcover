@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { DomainModelInterface} from '../../../types/DomainModelInterface'
 import { ObjectId } from 'bson'
+import type  { CategoryDtoType } from './Category'
 
 export const productSchema = z.object({
     id: z.string().refine((id => ObjectId.isValid(id))),
@@ -9,10 +10,19 @@ export const productSchema = z.object({
     image: z.string().url(),
     description: z.string(),
     categoryId: z.string().refine((id => ObjectId.isValid(id))),
-    createdAt: z.date().optional()
+    categoryTitle: z.string().optional(),
+    createdAt: z.date().optional(),
 })
 
-export type ProductDtoType = z.infer<typeof productSchema>
+type BaseProductDtoType = z.infer<typeof productSchema>
+
+export type ProductInclude = {
+    category?: {
+        [Property in keyof Omit<CategoryDtoType, 'id'>]?: CategoryDtoType[Property]
+    }
+}
+
+export type ProductDtoType = BaseProductDtoType & ProductInclude
 
 export class Product implements DomainModelInterface<ProductDtoType> {
     constructor(private productInfos: ProductDtoType) {
@@ -27,6 +37,7 @@ export class Product implements DomainModelInterface<ProductDtoType> {
             image: this.productInfos.image,
             description: this.productInfos.description,
             categoryId:  this.productInfos.categoryId,
+            categoryTitle:  this.productInfos.category?.title,
             createdAt: this.productInfos.createdAt
         }
     }

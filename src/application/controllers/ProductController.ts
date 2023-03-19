@@ -1,13 +1,12 @@
-import {Request} from 'express'
-import { RetrieveProducts, retrieveProductsUseCaseQuerySchema } from '../../domain/useCases/RetrieveProducts'
-import type ProductRepository from '../repositories/ProductRepository'
-import type JSONProductListPresenter from '../presenters/JSONProductListPresenter'
+
+import { RetrieveCategories } from '../../domain/useCases/RetrieveCategories'
+import type CategoryRepository from '../repositories/CategoryRepository'
+import type JSONPresenter from '../presenters/JSONPresenter'
 
 export default class ProductController {
-    constructor(private productRepository: ProductRepository, private jsonProductListPresenter: JSONProductListPresenter){}
-    list(request: Request){
-        const validRequest = retrieveProductsUseCaseQuerySchema.parse(request.params)
-        const useCase = new RetrieveProducts(this.productRepository, this.jsonProductListPresenter)
-        return useCase.execute(validRequest)
+    constructor(private categoryRepository: CategoryRepository, private jsonPresenter: JSONPresenter){}
+    list(){
+        const useCase = new RetrieveCategories(this.categoryRepository, this.jsonPresenter)
+        return useCase.execute()
     }
 }

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node build.mjs",
     "start": "node -r source-map-support/register build/infrastructure/server.js",
-    "start:dev": "pnpx nodemon"
+    "start:dev": "pnpx nodemon",
+    "fixtures": "$(pnpm bin)/fixtures --require=ts-node/register src/infrastructure/database/fixtures"
   },
   "keywords": [],
   "engines": {
@@ -14,6 +15,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@getbigger-io/prisma-fixtures-cli": "^2.0.1",
     "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
