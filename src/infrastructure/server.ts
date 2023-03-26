@@ -15,6 +15,9 @@ app.use(logRequest)
 
 const productController: ProductController = container.resolve('productController')
 
+app.use(express.static('front'))
+
+
 app.route('/products')
     .get(async (req, res) => {
         const data = await productController.list()
