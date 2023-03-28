@@ -37,12 +37,13 @@ async function getProducts() {
             productDiv.appendChild(categoryTitleH2Element)
 
 
-            const productList = document.createElement('ul')
-
+            const productList = document.createElement('div')
+            productList.className = 'product'
 
 
             category.products.forEach((product, productIndex) => {
-                const productListItem = document.createElement('li')
+                const productListItem = document.createElement('div')
+                productListItem.className = 'product-list-item'
 
                 const productItem = document.createElement('div')
                 productItem.className = 'product-card'

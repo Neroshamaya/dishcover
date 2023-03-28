@@ -5,32 +5,31 @@ body {
 h1 {
   margin-bottom: 5px;
   margin-left: 30px;
-  font-size: 35px;
+  font-size: 40px;
   color: #474747;
 }
 
 .title-products {
   font-weight: lighter;
-  margin-top: 0px;
-  margin-left: 30px;
-  font-size: 30px;
+  margin-top: 10px;
+  margin-left: 50px;
+  font-size: 35px;
   color: #8b8b8b;
 }
-
 
 .product-card {
   border-radius: 4px;
   margin-bottom: 3%;
   overflow: hidden;
   background: white;
-  border: 1px solid rgb(155, 155, 155);
   margin: 10px;
+  box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
 }
 
 
 .product-card h3 {
-  padding: 20px;
-  font-size: 24px;
+  padding: 25px;
+  font-size: 30px;
   color: #474747;
 }
 
@@ -40,12 +39,13 @@ h1 {
   color: #474747;
   font-weight: bold;
   display: flex;
+  font-size: 25px;
 }
 
 .product-description {
   padding: 0px 20px 20px 20px;
   color: #1f1f1f;
-  font-size: 16px;
+  font-size: 22px;
   opacity: .7;
 }
 
