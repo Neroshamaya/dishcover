@@ -40,7 +40,6 @@ async function getProducts() {
       const productList = document.createElement('div')
       productList.className = 'product-main-card'
 
-
       category.products.forEach((product, productIndex) => {
         const productListItem = document.createElement('div')
         productListItem.className = 'product-list-item'
