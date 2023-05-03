@@ -1,0 +1,16 @@
+{
+  "name": "@dishcover/shared",
+  "private": true,
+  "type": "commonjs",
+  "files": [
+    "index.ts"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "bson": "^5.0.1",
+    "zod": "^3.21.4"
+  }
+}
