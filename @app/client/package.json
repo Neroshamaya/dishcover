@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "@dishcover/client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.1.0",
+    "@mui/material": "^5.12.3",
+    "axios": "^1.4.0",
+    "fuse.js": "^6.6.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
+    "react-router-dom": "^6.11.1",
+    "usehooks-ts": "^2.9.1",
+    "valtio": "^1.10.5",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@dishcover/shared": "workspace:^",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",

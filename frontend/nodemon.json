@@ -1,4 +1,0 @@
-{
-    "ext": "*",
-    "exec": "npm run start"
-}
