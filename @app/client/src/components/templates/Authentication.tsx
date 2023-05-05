@@ -1,18 +1,15 @@
-import AuthenticationForm from '../organisms/AuthenticationForm'
+import AuthenticationForm, { AuthenticationFormProps } from '../organisms/AuthenticationForm'
 import AuthFormTitle from '../atoms/authentication/AuthFormTitle'
-import DishcoverAppBar from '../organisms/DishcoverAppBar'
 
-interface AuthenticationProps {
-  login: boolean
-  onSubmit: () => void
-}
+type AuthenticationProps = {
+  login?: boolean
+} & AuthenticationFormProps
 
-export default function Authentication({ login = true, onSubmit }: AuthenticationProps) {
+export default function Authentication(props: AuthenticationProps) {
   return (
     <>
-      <DishcoverAppBar />
-      <AuthFormTitle>{login ? 'login' : 'register'}</AuthFormTitle>
-      <AuthenticationForm login={login} onSubmit={onSubmit} />
+      <AuthFormTitle>{props.login ? 'login' : 'register'}</AuthFormTitle>
+      {<AuthenticationForm {...props} />}
     </>
   )
 }

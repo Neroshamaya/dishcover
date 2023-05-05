@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import UserContext, { ConnectedUser } from '../contexts/UserContext'
+import { useContext } from 'react'
+import UserContext from '../contexts/UserContext'
+import Routeur from './Routeur'
 
 export default function App() {
-  const [connectedUser, setConnectedUser] = useState<ConnectedUser | null>(null)
+  const userInitialContext = useContext(UserContext)
 
   return (
-    <UserContext.Provider value={{ connectedUser, setConnectedUser }}>
-      {/* Your app content goes here */}
+    <UserContext.Provider value={userInitialContext}>
+      <Routeur />
     </UserContext.Provider>
   )
 }

@@ -17,7 +17,7 @@ interface BaseRecipeCardProps {
 
 interface RecipeCardProps extends BaseRecipeCardProps {
   recipe: RecipeDtoType
-  cardActionCallbacks: {
+  cardActionCallbacks?: {
     onClickEdit: (recipe: RecipeDtoType) => void
     onClickDelete: (recipe: RecipeDtoType) => void
   }
@@ -61,11 +61,11 @@ export default function RecipeCard({ recipe, cardActionCallbacks }: RecipeCardPr
   }
 
   function handleClickEdit() {
-    cardActionCallbacks.onClickEdit(recipe)
+    cardActionCallbacks?.onClickEdit(recipe)
   }
 
   function handleClickDelete() {
-    cardActionCallbacks.onClickDelete(recipe)
+    cardActionCallbacks?.onClickDelete(recipe)
   }
 
   return (
@@ -77,8 +77,12 @@ export default function RecipeCard({ recipe, cardActionCallbacks }: RecipeCardPr
         {!show ? (
           <>
             <RecipeCardShowButton onClick={showDetails} />
-            <RecipeCardEditButton onClick={handleClickEdit} />
-            <RecipeCardDeleteButton onClick={handleClickDelete} />
+            {cardActionCallbacks ? (
+              <>
+                <RecipeCardEditButton onClick={handleClickEdit} />
+                <RecipeCardDeleteButton onClick={handleClickDelete} />{' '}
+              </>
+            ) : null}
           </>
         ) : (
           <RecipeCardBackButton onClick={hideDetails} />

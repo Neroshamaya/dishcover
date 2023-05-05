@@ -11,7 +11,7 @@ import { CreateRecipeQuery, CreateRecipeSchema, RecipeDtoType } from '@dishcover
 import IngredientList from './IngredientList'
 
 interface AuthenticationFormProps {
-  recipe?: RecipeDtoType
+  recipe?: RecipeDtoType | null
   onSubmit: (recipe: RecipeDtoType) => void
   create: boolean
 }
@@ -34,7 +34,7 @@ export default function RecipeForm({
     formState: { errors }
   } = useForm<CreateRecipeQuery>({
     resolver: zodResolver(CreateRecipeSchema),
-    defaultValues: recipe
+    defaultValues: recipe || undefined
   })
   const context = useContext(UserContext)
 

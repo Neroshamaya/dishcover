@@ -1,15 +1,13 @@
-import DishcoverAppBar from '../organisms/DishcoverAppBar'
 import HeroSection from '../organisms/HeroSection'
-import image1 from '../../../images/hero1.png'
-import image2 from '../../../images/hero2.png'
+import image1 from '../../assets/images/hero1.png'
+import image2 from '../../assets/images/hero2.png'
 import HeroTitle from '../atoms/hero/HeroTitle'
 import HeroText from '../atoms/hero/HeroText'
 import HeroButton from '../atoms/hero/HeroButton'
 
-export default function Home() {
+export default function HomeTemplate() {
   return (
     <>
-      <DishcoverAppBar />
       <HeroSection imageSrc={image1}>
         <HeroTitle>Unleash Your Culinary Creativity!</HeroTitle>
         <HeroText>

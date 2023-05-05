@@ -5,7 +5,7 @@ import SubmitButton from '../atoms/form/SubmitButton'
 import UserContext from '../../contexts/UserContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SignUpFormSchema } from '../../models/form/SignupForm'
+import { SignUpFormSchema } from '../../models/form/RegisterForm'
 import { CreateIngredientQuery, CreateIngredientSchema } from '@dishcover/shared'
 import * as apiService from '../../services/apiService'
 interface IngredientFormProps {

@@ -4,7 +4,7 @@ import RecipeCard from '../molecules/RecipeCard'
 
 interface RecipeCardListProps {
   recipes?: RecipeDtoType[]
-  cardActionCallbacks: {
+  cardActionCallbacks?: {
     onClickDelete: (recipe: RecipeDtoType) => void
     onClickEdit: (recipe: RecipeDtoType) => void
   }

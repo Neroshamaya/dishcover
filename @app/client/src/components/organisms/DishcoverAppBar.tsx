@@ -25,10 +25,10 @@ export default function DishcoverAppBar() {
     setAnchorElNav(null)
   }
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: '#29292E' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'end' }}>
             <BrandLogo />
             <BrandTitle />
           </Box>

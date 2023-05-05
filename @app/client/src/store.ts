@@ -2,7 +2,7 @@ import { IngredientDtoType, RecipeDtoType, RecipeIngredientDtoType } from '@dish
 import { proxy } from 'valtio'
 
 // Define the state object using Valtio
-const state = proxy({
+export const state = proxy({
   recipes: [] as RecipeDtoType[],
   ingredients: [] as IngredientDtoType[]
 })

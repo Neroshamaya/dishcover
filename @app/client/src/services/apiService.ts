@@ -142,5 +142,6 @@ export async function retrieveAllRecipes() {
     if (error instanceof AxiosError && error.response) {
       return { error: error.response.data }
     }
+    throw error
   }
 }
