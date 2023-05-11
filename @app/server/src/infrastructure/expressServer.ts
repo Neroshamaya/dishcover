@@ -144,7 +144,7 @@ export class ExpressApplication {
   }
   start(port?: number): void {
     this.app.listen(port || conf.port, () => {
-      console.log(`Shoupifly web server listening on port ${conf.port}`)
+      console.log(`Dishcover backend server is listening on port ${conf.port}`)
     })
   }
 }

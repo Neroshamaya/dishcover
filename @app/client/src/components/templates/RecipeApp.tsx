@@ -1,7 +1,7 @@
 import { RecipeDtoType } from '@dishcover/shared/types/resources/Recipe'
 import { Box, BoxProps } from '@mui/material'
 import Fuse from 'fuse.js'
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDebounce } from 'usehooks-ts'
 
 import RecipeSearchField from '../atoms/recipe/RecipeSearchField'
@@ -21,15 +21,14 @@ export default function RecipeApp({ recipes, cardActionCallbacks, ...otherProps 
 
   useEffect(() => {
     const fuse = new Fuse(recipes, {
-      useExtendedSearch: true,
       keys: [
-        { name: 'label', weight: 25 },
+        { name: 'label', weight: 100 },
         { name: 'recipeIngredients.details.label', weight: 20 },
         'description'
       ]
     })
     if (debouncedSearchQuery.length > 0) {
-      const results = fuse.search(`^${debouncedSearchQuery}`).map((result) => result.item)
+      const results = fuse.search(debouncedSearchQuery).map((result) => result.item)
 
       setSearchResults(results)
       return

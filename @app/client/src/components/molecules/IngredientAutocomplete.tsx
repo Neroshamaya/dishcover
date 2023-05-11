@@ -41,7 +41,6 @@ export default function IngredientAutoComplete({
         value={value}
         onChange={(event, newValue) => {
           event.preventDefault()
-          console.log('newValue', newValue)
           if (typeof newValue === 'string') {
             setTimeout(() => {
               openFormDialog({

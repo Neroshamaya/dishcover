@@ -57,7 +57,6 @@ export default function RecipeForm({ onSubmit: postSubmit, recipe }: Authenticat
     toggleIngredientFormOpen(false)
   }
   const checkServerErrors = async function (data: CreateRecipeQuery | UpdateRecipeQuery) {
-    console.log({ data, recipe })
     const token = context.getConnectedUser()?.token
     const authorId = context.getConnectedUser()?.id
     if (token && authorId) {
@@ -65,7 +64,6 @@ export default function RecipeForm({ onSubmit: postSubmit, recipe }: Authenticat
         ? await apiService.createRecipe(data, token)
         : await apiService.updateRecipe(data, token)
       if (!response?.error && response?.data) {
-        console.log({ response })
         postSubmit(response?.data)
       }
       const error = response?.error

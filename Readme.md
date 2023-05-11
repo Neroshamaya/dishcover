@@ -2,22 +2,41 @@
 
 An app to edit, create and discover recipes
 
-## install dependencies
+## Install dependencies
 
-First, make sure you use the right version of node.js
+1. First, make sure you use the right version of node.js
 
-`nvm install`
+   `nvm install`
 
-`nvm use`
+   `nvm use`
 
-`npm install -g pnpm`
+2. Then install [pnpm](https://pnpm.io/)
 
-`pnpm run setup`
+   `npm install -g pnpm`
 
-## start the backend and the frontend
+3. Run the dependencies installation on the backend and the frontend at the same time
+
+   `pnpm run setup`
+
+## Start the backend and the frontend
 
 `pnpm run dev`
 
-## run the backend test suite (none for the front yet)
+At some point, you should see something of this form in the console:
+
+```bash
+VITE v4.3.4  ready in 459 ms
+@app/client dev:   ➜  Local:   http://localhost:XXXX/
+@app/client dev:   ➜  Network: use --host to expose
+.....
+.....
+.....
+@app/server dev: Dishcover backend server is listening on port 3009
+
+```
+
+Just go to `http://localhost:XXXX/` and enjoy
+
+## Run the backend test suite (none for the front yet)
 
 `pnpm run server test`

@@ -16,7 +16,6 @@ export function addRecipe(recipe: RecipeDtoType) {
 export function updateRecipe(recipe: RecipeDtoType) {
   const index = state.recipes.findIndex((r) => r.id === recipe.id)
   if (index !== -1) {
-    console.log('Updating recipe', recipe)
     state.recipes[index] = recipe
   }
 }
@@ -32,9 +31,7 @@ export function upsertRecipe(recipe: RecipeDtoType) {
 
 // Define a function to delete a recipe from the list
 export function deleteRecipe(id: string) {
-  console.log(state.recipes)
   state.recipes = state.recipes.filter((r) => r.id !== id)
-  console.log(state.recipes)
 }
 
 // Define a function to set the list of ingredients

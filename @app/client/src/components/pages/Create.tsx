@@ -68,7 +68,6 @@ export default function Create() {
       const { error } = await apiService.deleteRecipe({ id: recipe.id }, token)
 
       if (!error) {
-        console.log('recipe deleted')
         store.deleteRecipe(recipe.id)
       }
     }
