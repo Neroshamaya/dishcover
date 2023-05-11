@@ -4,14 +4,18 @@ An app to edit, create and discover recipes
 
 ## install dependencies
 
-npm install -g pnpm
+First, make sure you use the right version of node.js
 
-pnpm run setup
+`nvm install && nvm use`
+
+`npm install -g pnpm`
+
+`pnpm run setup`
 
 ## start the backend and the frontend
 
-pnpm run dev
+`pnpm run dev`
 
 ## run the backend test suite (none for the front yet)
 
-pnpm run server test
+`pnpm run server test`
