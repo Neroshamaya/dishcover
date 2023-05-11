@@ -5,6 +5,7 @@ export default {
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/index.{ts,tsx}'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  coverageDirectory: '<rootDir>/../../coverage',
   coverageThreshold: {
     global: {
       branches: 60,
