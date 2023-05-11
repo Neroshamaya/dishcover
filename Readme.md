@@ -1,4 +1,4 @@
-#Dishcover
+# Dishcover
 
 An app to edit, create and discover recipes
 
