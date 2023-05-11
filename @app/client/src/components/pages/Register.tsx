@@ -1,27 +1,28 @@
-import Authentication from '../templates/Authentication'
+import { RegisterQuery } from '@dishcover/shared/types/requests'
+import { useContext } from 'react'
+import { redirect } from 'react-router-dom'
+
 import UserContext from '../../contexts/UserContext'
 import * as apiService from '../../services/apiService'
-import { useContext } from 'react'
-import { SubmitHandler } from 'react-hook-form'
-import { RegisterQuery } from '@dishcover/shared'
-import { useNavigate } from 'react-router-dom'
+import RegisterForm from '../organisms/RegisterForm'
 import Layout from '../templates/Layout'
 
 export default function Register() {
   const context = useContext(UserContext)
-  const navigate = useNavigate()
 
-  const onSubmit: SubmitHandler<RegisterQuery> = async (credentials) => {
+  const onSubmit = async (credentials: RegisterQuery) => {
     const response = await apiService.register(credentials)
     if (!response?.error && response?.data?.token) {
       context.setConnectedUser({ ...response?.data?.user, token: response?.data?.token })
-      navigate('/create')
+      redirect('/create')
+      return
     }
+    return response?.error
   }
 
   return (
     <Layout>
-      <Authentication onSubmit={onSubmit} />
+      <RegisterForm onSubmit={onSubmit} />
     </Layout>
   )
 }

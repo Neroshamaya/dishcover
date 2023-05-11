@@ -1,10 +1,14 @@
-import { AuthenticateUser } from '../useCases/AuthenticateUser'
-import { RegisterUser } from '../useCases/RegisterUser'
-import type EmailAuthenticationStrategy from '../strategies/EmailAuthenticationStrategy'
-import type EmailRegistrationStrategy from '../strategies/EmailRegistrationStrategy'
-import { authenticateUserQuerySchema } from '../useCases/queries/IAuthenticateUserQuery'
+import {
+  LoginQuerySchema,
+  RegisterQuerySchema
+} from '@dishcover/shared/schemas/requests/Authentication'
+
 import ValidationError from '../errors/ValidationError'
 import JwtService from '../services/JwtService'
+import type EmailAuthenticationStrategy from '../strategies/EmailAuthenticationStrategy'
+import type EmailRegistrationStrategy from '../strategies/EmailRegistrationStrategy'
+import { AuthenticateUser } from '../useCases/AuthenticateUser'
+import { RegisterUser } from '../useCases/RegisterUser'
 
 export default class AuthenticationController {
   constructor(
@@ -14,27 +18,29 @@ export default class AuthenticationController {
   ) {}
 
   async login(args: unknown) {
-    const result = authenticateUserQuerySchema.safeParse(args)
+    const result = LoginQuerySchema.safeParse(args)
     if (!result.success) throw new ValidationError(result.error)
     const useCase = new AuthenticateUser(this.emailAuthenticationStrategy)
     const response = await useCase.execute(result.data)
     const token = this.jwtService.generateToken({
       email: result.data.email,
-      id: response.getDto().id
+      id: response.id?.value
     })
-    return { user: response, token }
+    return { user: response.toResponse(), token }
   }
 
   async register(args: unknown) {
-    const result = authenticateUserQuerySchema.safeParse(args)
-    if (!result.success) throw new ValidationError(result.error)
+    const result = RegisterQuerySchema.safeParse(args)
+    if (!result.success) {
+      throw new ValidationError(result.error)
+    }
     const useCase = new RegisterUser(this.emailRegistrationStrategy)
-    const response = await useCase.execute(result.data)
+    const user = await useCase.execute(result.data)
 
     const token = this.jwtService.generateToken({
       email: result.data.email,
-      id: response.getDto().id
+      id: user.id?.value
     })
-    return { user: response, token }
+    return { user: user.toResponse(), token }
   }
 }

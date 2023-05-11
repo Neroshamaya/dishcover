@@ -1,4 +1,4 @@
-import { IngredientDtoType, RecipeDtoType, RecipeIngredientDtoType } from '@dishcover/shared' // The Recipe and RecipeIngredient DTO types from the Zod schemas
+import { IngredientDtoType, RecipeDtoType } from '@dishcover/shared/types/resources' // The Recipe and RecipeIngredient DTO types from the Zod schemas
 import { proxy } from 'valtio'
 
 // Define the state object using Valtio
@@ -6,11 +6,6 @@ export const state = proxy({
   recipes: [] as RecipeDtoType[],
   ingredients: [] as IngredientDtoType[]
 })
-
-// Define a function to set the list of recipes
-export function setRecipes(recipes: RecipeDtoType[]) {
-  state.recipes = recipes
-}
 
 // Define a function to add a new recipe to the list
 export function addRecipe(recipe: RecipeDtoType) {
@@ -21,51 +16,35 @@ export function addRecipe(recipe: RecipeDtoType) {
 export function updateRecipe(recipe: RecipeDtoType) {
   const index = state.recipes.findIndex((r) => r.id === recipe.id)
   if (index !== -1) {
+    console.log('Updating recipe', recipe)
     state.recipes[index] = recipe
+  }
+}
+
+export function upsertRecipe(recipe: RecipeDtoType) {
+  const index = state.recipes.findIndex((r) => r.id === recipe.id)
+  if (index === -1) {
+    addRecipe(recipe)
+  } else {
+    updateRecipe(recipe)
   }
 }
 
 // Define a function to delete a recipe from the list
 export function deleteRecipe(id: string) {
+  console.log(state.recipes)
   state.recipes = state.recipes.filter((r) => r.id !== id)
-}
-
-// Define a function to add a recipe ingredient to a recipe
-export function addRecipeIngredient(recipeId: string, ingredient: RecipeIngredientDtoType) {
-  const recipe = state.recipes.find((r) => r.id === recipeId)
-  if (recipe) {
-    if (!recipe.ingredients) {
-      recipe.ingredients = []
-    }
-    recipe.ingredients.push(ingredient)
-    updateRecipe(recipe)
-  }
-}
-
-// Define a function to update a recipe ingredient in a recipe
-export function updateRecipeIngredient(recipeId: string, ingredient: RecipeIngredientDtoType) {
-  const recipe = state.recipes.find((r) => r.id === recipeId)
-  if (recipe && recipe.ingredients) {
-    const index = recipe.ingredients.findIndex((ri) => ri.id === ingredient.id)
-    if (index !== -1) {
-      recipe.ingredients[index] = ingredient
-      updateRecipe(recipe)
-    }
-  }
-}
-
-// Define a function to remove a recipe ingredient from a recipe
-export function removeRecipeIngredient(recipeId: string, ingredientId: string) {
-  const recipe = state.recipes.find((r) => r.id === recipeId)
-  if (recipe && recipe.ingredients) {
-    recipe.ingredients = recipe.ingredients.filter((ri) => ri.id !== ingredientId)
-    updateRecipe(recipe)
-  }
+  console.log(state.recipes)
 }
 
 // Define a function to set the list of ingredients
 export function setIngredients(ingredients: IngredientDtoType[]) {
   state.ingredients = ingredients
+}
+
+// Define a function to set the list of recipes
+export function setRecipes(recipes: RecipeDtoType[]) {
+  state.recipes = recipes
 }
 
 // Define a function to add a new ingredient to the list

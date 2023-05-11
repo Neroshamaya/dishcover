@@ -3,11 +3,12 @@ import { Typography } from '@mui/material'
 export default function BrandTitle() {
   return (
     <Typography
-      component={'h3'}
+      component={'a'}
+      href="/"
       sx={{
-        verticalAlign: 'middle',
         fontFamily: 'NewakeFontDemo',
-        marginLeft: 1,
+        textDecoration: 'none',
+        color: 'white',
         fontSize: 29
       }}>
       dishcover

@@ -1,7 +1,8 @@
-import express, { Request, Response, NextFunction, RequestHandler } from 'express'
-import jwt, { JwtPayload } from 'jsonwebtoken'
-import { tokenSecret } from '../configuration'
+import { RequestHandler } from 'express'
+import jwt from 'jsonwebtoken'
 import { z } from 'zod'
+
+import { tokenSecret } from '../configuration'
 
 const decodedTokenSchema = z.object({
   email: z.string().email(),
@@ -10,7 +11,7 @@ const decodedTokenSchema = z.object({
 })
 
 export const jwtVerification: RequestHandler = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1]
+  const token = req.headers['x-access-token'] as string
 
   if (!token) {
     return res.status(401).send('Unauthorized')

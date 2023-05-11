@@ -1,10 +1,10 @@
-export * from './src/zod/Ingredient'
-export * from './src/zod/Recipe'
-export * from './src/zod/User'
-export * from './src/types/Errors'
-export * from './src/types/requests/Authentication'
-export * from './src/types/requests/Ingredient'
-export * from './src/types/requests/Recipe'
-export * from './src/types/responses/Authentication'
-export * from './src/types/responses/Ingredient'
-export * from './src/types/responses/Recipe'
+export * as Schema from './schemas'
+export {
+  IUniqueConstraintError,
+  IValidationError,
+  ApiError,
+  IWrongEmailPasswordComboError
+} from './types/Errors'
+export { DTOType } from './types/Dto'
+export * as ApiRequest from './types/requests'
+export * as ApiResponse from './types/responses'

@@ -1,13 +1,23 @@
-import { Button } from '@mui/material'
+import { Button, ButtonProps } from '@mui/material'
 import React from 'react'
 
-interface RecipeCreateButtonProps {
+interface RecipeCreateButtonProps extends ButtonProps {
   children: React.ReactNode
   onClick: () => void
 }
-export default function RecipeCreateButton({ children, onClick }: RecipeCreateButtonProps) {
+export default function RecipeCreateButton({
+  children,
+  onClick,
+  ...otherProps
+}: RecipeCreateButtonProps) {
   return (
-    <Button variant="contained" size="large" onClick={onClick}>
+    <Button
+      sx={{ my: 3 }}
+      {...otherProps}
+      variant="contained"
+      type="button"
+      size="large"
+      onClick={onClick}>
       {children}
     </Button>
   )

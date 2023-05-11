@@ -1,7 +1,7 @@
-import { Icon, IconButton } from '@mui/material'
-export default function IngredientIncreaseButton() {
+import { Icon, IconButton, IconButtonProps } from '@mui/material'
+export default function IngredientIncreaseButton(props: IconButtonProps) {
   return (
-    <IconButton aria-label="increase">
+    <IconButton {...props} aria-label="increase">
       <Icon>add_circle</Icon>
     </IconButton>
   )

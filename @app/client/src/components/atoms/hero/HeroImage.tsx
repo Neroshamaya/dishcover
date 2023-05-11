@@ -1,7 +1,7 @@
-import React from 'react'
+import Image from 'mui-image'
 interface HeroImageProps {
   src: string
 }
 export default function HeroImage({ src = '/' }: HeroImageProps) {
-  return <img src={src} />
+  return <Image fit="contain" style={{ maxWidth: '600px' }} src={src} />
 }

@@ -1,91 +1,193 @@
-import FormTextField from '../atoms/form/FormTextField'
-import { useContext } from 'react'
-import SubmitButton from '../atoms/form/SubmitButton'
-import RecipeFormTitle from '../atoms/form/RecipeFormTitle'
+import { CreateRecipeQuerySchema } from '@dishcover/shared/schemas/requests/Recipe'
+import {
+  CreateIngredientQuery,
+  CreateRecipeIngredientQuery,
+  CreateRecipeQuery,
+  UpdateRecipeQuery
+} from '@dishcover/shared/types/requests'
+import {
+  IngredientDtoType,
+  RecipeDtoType,
+  RecipeIngredientDtoType
+} from '@dishcover/shared/types/resources'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Box, Dialog, TextField } from '@mui/material'
+import { useContext, useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 import UserContext from '../../contexts/UserContext'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import * as apiService from '../../services/apiService'
-import { CreateRecipeQuery, CreateRecipeSchema, RecipeDtoType } from '@dishcover/shared'
+import FormTextField from '../atoms/form/FormTextField'
+import RecipeFormTitle from '../atoms/form/RecipeFormTitle'
+import SubmitButton from '../atoms/form/SubmitButton'
+import IngredientAutoComplete from '../molecules/IngredientAutocomplete'
+import IngredientForm from './IngredientForm'
 import IngredientList from './IngredientList'
 
 interface AuthenticationFormProps {
-  recipe?: RecipeDtoType | null
-  onSubmit: (recipe: RecipeDtoType) => void
-  create: boolean
+  recipe?: CreateRecipeQuery | RecipeDtoType | null
+  onSubmit: (submittedRecipe: RecipeDtoType) => void
 }
 
-export default function RecipeForm({
-  recipe = {
-    description: '',
-    label: '',
-    ingredients: [],
-    authorId: '',
-    image: ''
-  },
-  onSubmit: postSubmit,
-  create
-}: AuthenticationFormProps) {
+export default function RecipeForm({ onSubmit: postSubmit, recipe }: AuthenticationFormProps) {
+  const context = useContext(UserContext)
   const {
     register,
-    handleSubmit,
+    handleSubmit: manageSubmit,
+    setValue,
     watch,
+    trigger,
+    setError,
+    getValues,
     formState: { errors }
   } = useForm<CreateRecipeQuery>({
-    resolver: zodResolver(CreateRecipeSchema),
-    defaultValues: recipe || undefined
+    resolver: zodResolver(CreateRecipeQuerySchema),
+    defaultValues: recipe || { recipeIngredients: [] },
+    mode: 'onChange'
   })
-  const context = useContext(UserContext)
+  const [ingredientFormOpen, toggleIngredientFormOpen] = useState(false)
+  const [newIngredient, setNewIngredient] = useState<Partial<CreateIngredientQuery>>()
 
-  const onSubmit: SubmitHandler<CreateRecipeQuery> = async (recipeInfos) => {
-    const token = context.connectedUser?.token
-    if (token) {
-      const response = create
-        ? await apiService.createRecipe(
-            {
-              ...recipeInfos,
-              authorId: context.connectedUser?.id
-            },
-            token
-          )
-        : await apiService.updateRecipe(
-            {
-              ...recipeInfos,
-              authorId: context.connectedUser?.id
-            },
-            token
-          )
+  const openIngredientForm = (defaultValues: Partial<CreateIngredientQuery>) => {
+    setNewIngredient(defaultValues)
+    toggleIngredientFormOpen(true)
+  }
+
+  const closeIngredientForm = () => {
+    toggleIngredientFormOpen(false)
+  }
+  const checkServerErrors = async function (data: CreateRecipeQuery | UpdateRecipeQuery) {
+    console.log({ data, recipe })
+    const token = context.getConnectedUser()?.token
+    const authorId = context.getConnectedUser()?.id
+    if (token && authorId) {
+      const response = !data.id
+        ? await apiService.createRecipe(data, token)
+        : await apiService.updateRecipe(data, token)
       if (!response?.error && response?.data) {
+        console.log({ response })
         postSubmit(response?.data)
+      }
+      const error = response?.error
+      if (error && error.details) {
+        if (Array.isArray(error.details)) {
+          for (const detail of error.details) {
+            if (detail.fields) {
+              for (const field of detail.fields) {
+                setError(field as keyof CreateRecipeQuery, {
+                  message: detail.message || error.message
+                })
+              }
+            }
+          }
+          return
+        }
       }
     }
   }
-  watch()
+  function addNewRecipeIngredient(ingredient: IngredientDtoType) {
+    const recipeIngredient: CreateRecipeIngredientQuery = {
+      ingredientId: ingredient.id as string,
+      quantity: 1,
+      details: ingredient
+    }
+    const recipeIngredients = incrementIngredientQuantity(recipeIngredient)
+    setValue('recipeIngredients', recipeIngredients)
+    closeIngredientForm()
+  }
+
+  function decrementIngredientQuantity(
+    recipeIngredient: CreateRecipeIngredientQuery | RecipeIngredientDtoType
+  ) {
+    const currentRecipe = getValues()
+    const recipeIngredients = currentRecipe.recipeIngredients || []
+    const existingIngredientIndex = recipeIngredients.findIndex(
+      (i) => i.ingredientId === recipeIngredient.ingredientId
+    )
+    if (existingIngredientIndex !== -1) {
+      recipeIngredients[existingIngredientIndex].quantity -= 1
+      if (recipeIngredients[existingIngredientIndex].quantity === 0) {
+        recipeIngredients.splice(existingIngredientIndex, 1)
+      }
+    }
+
+    setValue('recipeIngredients', recipeIngredients)
+    trigger('recipeIngredients')
+    return recipeIngredients
+  }
+
+  function incrementIngredientQuantity(
+    recipeIngredient: RecipeIngredientDtoType | CreateRecipeIngredientQuery
+  ) {
+    const currentRecipe = getValues()
+    const recipeIngredients: (RecipeIngredientDtoType | CreateRecipeIngredientQuery)[] =
+      currentRecipe.recipeIngredients || []
+    const existingIngredientIndex = recipeIngredients.findIndex(
+      (i) => i.ingredientId === recipeIngredient.ingredientId
+    )
+    if (existingIngredientIndex !== -1) {
+      recipeIngredients[existingIngredientIndex].quantity += 1
+    } else {
+      recipeIngredients.push(recipeIngredient)
+    }
+    setValue('recipeIngredients', recipeIngredients)
+    trigger('recipeIngredients')
+    return recipeIngredients
+  }
+
   return (
-    <form>
-      <RecipeFormTitle>{create ? 'create' : 'edit'} a recipe</RecipeFormTitle>
-      <FormTextField
-        error={!!errors.label}
-        helperText={errors.label?.message}
-        {...register('label')}
-        label="Label"
-        id="label"></FormTextField>
-      <FormTextField
-        {...register('image')}
-        error={!!errors.image}
-        helperText={errors.image?.message}
-        label="Image"
-        id="image"
-        type="image"></FormTextField>
-      <IngredientList recipeIngredients={watch().ingredients}></IngredientList>
-      <FormTextField
-        {...register('description')}
-        error={!!errors.description}
-        helperText={errors.description?.message}
-        label="Description"
-        id="description"></FormTextField>
-      <SubmitButton onSubmit={handleSubmit(onSubmit)}>submit</SubmitButton>
-    </form>
+    <>
+      <form onSubmit={manageSubmit(checkServerErrors)}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', padding: 1, rowGap: 2 }}>
+          <RecipeFormTitle>{!recipe ? 'create' : 'edit'} a recipe</RecipeFormTitle>
+          <TextField
+            sx={{ display: 'none' }}
+            value={recipe?.authorId || context.getConnectedUser()?.id}
+            InputProps={{ ...register('authorId') }}
+          />
+          <FormTextField
+            error={!!errors.label}
+            helperText={errors.label?.message}
+            InputProps={{ ...register('label') }}
+            label="Label"
+            id="label"
+          />
+          <FormTextField
+            error={!!errors.image}
+            helperText={errors.image?.message}
+            InputProps={{ ...register('image') }}
+            label="Image"
+            id="image"
+            type="url"
+          />
+          <IngredientList
+            listItemProps={{
+              decrease: decrementIngredientQuantity,
+              increase: incrementIngredientQuantity,
+              canEdit: true
+            }}
+            recipeIngredients={watch('recipeIngredients')}></IngredientList>
+          <IngredientAutoComplete
+            error={!!errors.recipeIngredients}
+            helperText={errors.recipeIngredients?.message}
+            onAddIngredient={addNewRecipeIngredient}
+            openFormDialog={openIngredientForm}
+          />
+          <FormTextField
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            InputProps={{ ...register('description') }}
+            multiline
+            minRows={3}
+            label="Description"
+            id="description"
+          />
+          <SubmitButton>submit</SubmitButton>
+        </Box>
+      </form>
+      <Dialog open={ingredientFormOpen} onClose={closeIngredientForm}>
+        <IngredientForm postSubmit={addNewRecipeIngredient} ingredient={newIngredient} />
+      </Dialog>
+    </>
   )
 }

@@ -1,8 +1,9 @@
 {
-  "name": "shoupifly",
+  "name": "dishcover",
   "version": "1.0.0",
-  "description": "A shopping app to flex on dev skills",
+  "description": "A recipe App",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "client": "pnpm --filter @dishcover/client",
     "server": "pnpm --filter @dishcover/server",

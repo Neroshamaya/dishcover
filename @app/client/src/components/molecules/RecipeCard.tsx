@@ -1,56 +1,56 @@
-import { RecipeDtoType } from '@dishcover/shared'
-import { Card, CardContent, CardActions } from '@mui/material'
-import RecipeCardTitle from '../atoms/recipe/card/RecipeCardTitle'
-import RecipeCardImage from '../atoms/recipe/card/RecipeCardImage'
-import IngredientList from '../organisms/IngredientList'
-import { useState } from 'react'
-import RecipeCardShowButton from '../atoms/recipe/card/RecipeCardShowButton'
-import RecipeCardDeleteButton from '../atoms/recipe/card/RecipeCardDeleteButton'
-import RecipeCardEditButton from '../atoms/recipe/card/RecipeCardEditButton'
+import { RecipeDtoType } from '@dishcover/shared/types/resources/Recipe'
+import { Card, CardActions, CardContent } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
-import RecipeCardDescription from '../atoms/recipe/card/RecipeCardDescription'
+import { useState } from 'react'
+
+import Separator from '../atoms/common/Separator'
 import RecipeCardBackButton from '../atoms/recipe/card/RecipeCardBackButton'
+import RecipeCardDeleteButton from '../atoms/recipe/card/RecipeCardDeleteButton'
+import RecipeCardDescription from '../atoms/recipe/card/RecipeCardDescription'
+import RecipeCardEditButton from '../atoms/recipe/card/RecipeCardEditButton'
+import RecipeCardImage from '../atoms/recipe/card/RecipeCardImage'
+import RecipeCardShowButton from '../atoms/recipe/card/RecipeCardShowButton'
+import RecipeCardTitle from '../atoms/recipe/card/RecipeCardTitle'
+import IngredientList from '../organisms/IngredientList'
 
-interface BaseRecipeCardProps {
-  recipe: RecipeDtoType
-}
-
-interface RecipeCardProps extends BaseRecipeCardProps {
-  recipe: RecipeDtoType
-  cardActionCallbacks?: {
-    onClickEdit: (recipe: RecipeDtoType) => void
-    onClickDelete: (recipe: RecipeDtoType) => void
+interface RecipeCardProps {
+  data: {
+    recipe: RecipeDtoType
+    cardActionCallbacks?: {
+      onClickEdit: (recipe: RecipeDtoType) => void
+      onClickDelete: (recipe: RecipeDtoType) => void
+    }
   }
 }
 
-function NormalContent({ recipe }: BaseRecipeCardProps) {
+function NormalContent({ recipe }: { recipe: RecipeDtoType }) {
   return (
     <>
-      <RecipeCardTitle>{recipe.label}</RecipeCardTitle>
-
       {recipe.image ? (
-        <RecipeCardImage />
+        <RecipeCardImage src={recipe.image} />
       ) : (
-        <IngredientList recipeIngredients={recipe.ingredients} />
+        <IngredientList recipeIngredients={recipe.recipeIngredients} />
       )}
     </>
   )
 }
 
-function ShowContent({ recipe }: BaseRecipeCardProps) {
+function ShowContent({ recipe }: { recipe: RecipeDtoType }) {
   return (
-    <Grid container spacing={2} columns={2}>
+    <Grid container columnGap={3}>
       <Grid xs>
-        <IngredientList recipeIngredients={recipe.ingredients} />
+        <IngredientList recipeIngredients={recipe.recipeIngredients} />
       </Grid>
-      <Grid xs>
-        <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
-      </Grid>
+      {recipe.description && recipe.description.length > 0 ? (
+        <Grid xs>
+          <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
+        </Grid>
+      ) : null}
     </Grid>
   )
 }
 
-export default function RecipeCard({ recipe, cardActionCallbacks }: RecipeCardProps) {
+export default function RecipeCard({ data: { recipe, cardActionCallbacks } }: RecipeCardProps) {
   const [show, setShow] = useState(false)
 
   function showDetails() {
@@ -69,14 +69,19 @@ export default function RecipeCard({ recipe, cardActionCallbacks }: RecipeCardPr
   }
 
   return (
-    <Card variant="outlined">
+    <Card elevation={5} variant="elevation">
       <CardContent>
+        <RecipeCardTitle>{recipe.label}</RecipeCardTitle>
+        <Separator spaceBefore={0} spaceAfter={1} style={'dashed'} />
         {!show ? <NormalContent recipe={recipe} /> : <ShowContent recipe={recipe} />}
       </CardContent>
       <CardActions>
         {!show ? (
           <>
-            <RecipeCardShowButton onClick={showDetails} />
+            {' '}
+            {(recipe.description && recipe.description.length > 0) || recipe.image ? (
+              <RecipeCardShowButton onClick={showDetails} />
+            ) : null}
             {cardActionCallbacks ? (
               <>
                 <RecipeCardEditButton onClick={handleClickEdit} />

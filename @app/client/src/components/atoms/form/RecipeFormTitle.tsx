@@ -6,5 +6,17 @@ interface RecipeFormTitleProps {
 }
 
 export default function RecipeFormTitle({ children }: RecipeFormTitleProps) {
-  return <Typography component={'h4'}>{children}</Typography>
+  return (
+    <Typography
+      component={'h4'}
+      sx={{
+        fontFamily: 'SkModernistRegular',
+        textTransform: 'uppercase',
+        fontSize: 19,
+        fontWeight: '400',
+        textAlign: 'center'
+      }}>
+      {children}
+    </Typography>
+  )
 }

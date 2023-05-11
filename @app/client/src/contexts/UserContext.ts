@@ -1,16 +1,22 @@
+import { UserDtoType } from '@dishcover/shared/types/resources/User'
 import { createContext } from 'react'
-import { UserDtoType } from '@dishcover/shared'
 
 export type ConnectedUser = UserDtoType & { token: string }
 
 interface UserContextProps {
-  connectedUser: ConnectedUser | null
+  getConnectedUser: () => ConnectedUser | null
   setConnectedUser: (user: ConnectedUser) => void
   unsetConnectedUser: () => void
 }
 
 const UserContext = createContext<UserContextProps>({
-  connectedUser: null,
+  getConnectedUser: () => {
+    const existingUserInfos = localStorage.getItem('user')
+    if (existingUserInfos) {
+      return JSON.parse(existingUserInfos)
+    }
+    return null
+  },
   unsetConnectedUser: () => {
     localStorage.removeItem('user')
   },

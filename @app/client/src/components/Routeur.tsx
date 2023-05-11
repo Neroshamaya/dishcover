@@ -1,10 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import Logout from './pages/Logout'
-import Home from './pages/Home'
-import Explore from './pages/Explore'
+import { BrowserRouter,Route, Routes } from 'react-router-dom'
+
 import Create from './pages/Create'
+import Explore from './pages/Explore'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Logout from './pages/Logout'
+import Register from './pages/Register'
 
 export default function Router() {
   return (

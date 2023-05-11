@@ -1,5 +1,5 @@
+import { Icon,Tooltip } from '@mui/material'
 import React from 'react'
-import { Tooltip, Icon } from '@mui/material'
 
 interface IngredientDescriptionProps {
   description: React.ReactNode

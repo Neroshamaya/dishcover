@@ -4,5 +4,16 @@ interface RecipeCardTitleProps {
 }
 
 export default function RecipeCardTitle({ children }: RecipeCardTitleProps) {
-  return <Typography component={'h5'}>{children}</Typography>
+  return (
+    <Typography
+      sx={{
+        fontFamily: 'EskoolRegular',
+        fontWeight: 700,
+        fontSize: 25,
+        marginBottom: 1
+      }}
+      component={'h5'}>
+      {children}
+    </Typography>
+  )
 }

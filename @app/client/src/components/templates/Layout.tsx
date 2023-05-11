@@ -1,10 +1,11 @@
-import DishcoverAppBar from '../organisms/DishcoverAppBar'
-import React from 'react'
+import { Container, createTheme,ThemeProvider } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider, createTheme } from '@mui/material'
+import React from 'react'
+
 import EskoolRegular from '../../assets/fonts/Eskool-Regular.ttf'
 import NewakeFontDemo from '../../assets/fonts/Newake-Font-Demo.otf'
 import SkModernistRegular from '../../assets/fonts/Sk-Modernist-Regular.otf'
+import DishcoverAppBar from '../organisms/DishcoverAppBar'
 
 const theme = createTheme({
   components: {
@@ -36,7 +37,7 @@ export default function Layout({ children }: LayoutProps) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <DishcoverAppBar />
-      {children}
+      <Container>{children}</Container>
     </ThemeProvider>
   )
 }

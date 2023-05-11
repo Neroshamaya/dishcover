@@ -1,6 +1,7 @@
-import { IUserRepository } from '../../domain/types/IUserRepository'
-import { User } from '../../domain/models/User'
 import { Prisma, PrismaClient } from '@prisma/client'
+
+import User from '../../domain/models/User'
+import { IUserRepository } from '../../domain/types/repository/IUserRepository'
 import UniqueConstraintError from '../errors/UniqueConstraintError'
 
 export default class UserRepository implements IUserRepository {
@@ -12,13 +13,13 @@ export default class UserRepository implements IUserRepository {
         email
       }
     })
-    return user ? new User(user) : null
+    return user ? User.fromPrisma(user) : null
   }
 
   async createUser(user: User): Promise<User | never> {
     try {
-      const prismaUser = await this.prismaClient.user.create({ data: user.getDto() })
-      return new User(prismaUser)
+      const prismaUser = await this.prismaClient.user.create({ data: user.toPrismaCreate() })
+      return User.fromPrisma(prismaUser)
     } catch (error: unknown) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new UniqueConstraintError(error)

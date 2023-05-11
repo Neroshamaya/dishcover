@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bson": "^5.0.1",
+    "utility-types": "^3.10.0",
     "zod": "^3.21.4"
   }
 }

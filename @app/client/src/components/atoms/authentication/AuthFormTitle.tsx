@@ -6,5 +6,16 @@ interface AuthFormTitleProps {
 }
 
 export default function AuthFormTitle({ children }: AuthFormTitleProps) {
-  return <Typography component={'p'}>{children}</Typography>
+  return (
+    <Typography
+      component={'p'}
+      sx={{
+        fontFamily: 'NewakeFontDemo',
+        fontSize: 40,
+        textAlign: 'center',
+        textTransform: 'uppercase'
+      }}>
+      {children}
+    </Typography>
+  )
 }

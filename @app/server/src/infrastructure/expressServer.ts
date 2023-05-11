@@ -1,124 +1,150 @@
-import express from 'express'
-import container from './awilixContainer'
-import * as conf from './configuration'
 import bodyParser from 'body-parser'
+import cors from 'cors'
+import express, { Express } from 'express'
+import helmet from 'helmet'
 
 import type AuthenticationController from '../application/controllers/AuthenticationController'
 import type IngredientController from '../application/controllers/IngredientController'
+import type RecipeController from '../application/controllers/RecipeController'
 
-import type ReceipeController from '../application/controllers/ReceipeController'
-
-import responseHeaders from './expressMiddlewares/responseHeaders'
-import logRequest from './expressMiddlewares/logRequest'
+import * as conf from './configuration'
+import { localHostDynamicOrigin } from './corsOrigin'
+import { apiKeyVerification } from './expressMiddlewares/apiKeyVerification'
 import { errorHandler } from './expressMiddlewares/errorHandler'
 import { jwtVerification } from './expressMiddlewares/jwtVerification'
+import logRequest from './expressMiddlewares/logRequest'
+import { AwilixContainer } from 'awilix'
+import { exit } from 'process'
 
-const app = express()
-
-const authenticationController: AuthenticationController = container.resolve(
-  'authenticationController'
-)
-const receipeController: ReceipeController = container.resolve('receipeController')
-const ingredientController: IngredientController = container.resolve('ingredientController')
-
-app.use(bodyParser.json())
-app.use(logRequest)
-app.use(responseHeaders)
-
-app.route('/login/password').post(async (req, res, next) => {
-  try {
-    const data = await authenticationController.login(req.body)
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
+export class ExpressApplication {
+  app: Express
+  corsConf = {
+    origin: localHostDynamicOrigin
   }
-})
+  constructor(awilixContainer: AwilixContainer) {
+    this.app = express()
+    const authenticationController: AuthenticationController = awilixContainer.resolve(
+      'authenticationController'
+    )
+    const recipeController: RecipeController = awilixContainer.resolve('recipeController')
 
-app.route('/register/password').post(async (req, res, next) => {
-  try {
-    const data = await authenticationController.register(req.body)
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
+    const ingredientController: IngredientController =
+      awilixContainer.resolve('ingredientController')
+    this.app.use(cors(this.corsConf))
 
-app.route('/receipes').post(jwtVerification, async (req, res, next) => {
-  try {
-    const data = await receipeController.createReceipe(req.body)
-    res.status(201)
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
+    this.app.use(helmet())
 
-app.route('/receipes').patch(jwtVerification, async (req, res, next) => {
-  try {
-    const data = await receipeController.updateReceipe(req.body)
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
+    this.app.use(bodyParser.json())
+    this.app.use(logRequest)
+    this.app.use(apiKeyVerification)
 
-app.route('/receipes').delete(jwtVerification, async (req, res, next) => {
-  try {
-    await receipeController.deleteReceipe(req.body)
-    res.send({ done: true })
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
-
-app.route('/receipes/personal').get(jwtVerification, async (req, res, next) => {
-  try {
-    const data = await receipeController.retrieveAllFromUser({ userId: req.app.locals['userId'] })
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
-
-app.route('/receipes/community').get(jwtVerification, async (req, res, next) => {
-  try {
-    const data = await receipeController.retrieveAllExceptFromUser({
-      userId: req.app.locals['userId']
+    this.app.route('/login/password').post(async (req, res, next) => {
+      try {
+        const data = await authenticationController.login(req.body)
+        res.send(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
     })
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
 
-app.route('/ingredients').get(jwtVerification, async (req, res, next) => {
-  try {
-    const data = await ingredientController.retrieveAll()
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
+    this.app.route('/register/password').post(async (req, res, next) => {
+      try {
+        const data = await authenticationController.register(req.body)
+        res.send(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
 
-app.route('/ingredients').post(jwtVerification, async (req, res, next) => {
-  try {
-    const data = await ingredientController.createIngredient(req.body)
-    res.send(data)
-    res.end()
-  } catch (err) {
-    return next(err)
-  }
-})
+    this.app.route('/recipes').post(jwtVerification, async (req, res, next) => {
+      try {
+        const data = await recipeController.createRecipe(req.body)
+        res.status(201)
+        res.json(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
 
-app.use(errorHandler)
-app.listen(conf.port, () => {
-  console.log(`Shoupifly web server listening on port ${conf.port}`)
-})
+    this.app.route('/recipes').patch(jwtVerification, async (req, res, next) => {
+      try {
+        const data = await recipeController.updateRecipe(req.body)
+        res.json(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
+
+    this.app.route('/recipes').delete(jwtVerification, async (req, res, next) => {
+      try {
+        await recipeController.deleteRecipe(req.body)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
+
+    this.app.route('/recipes/personal').get(jwtVerification, async (req, res, next) => {
+      try {
+        const data = await recipeController.retrieveAllFromUser({
+          userId: req.app.locals['userId']
+        })
+        res.json(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
+
+    this.app.route('/recipes/community').get(async (req, res, next) => {
+      try {
+        const data = await recipeController.retrieveAll()
+        res.json(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
+
+    this.app.route('/ingredients').get(async (req, res, next) => {
+      try {
+        const data = await ingredientController.retrieveAll()
+        res.json(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
+
+    this.app.route('/ingredients').post(jwtVerification, async (req, res, next) => {
+      try {
+        const data = await ingredientController.createIngredient(req.body)
+        res.json(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
+
+    this.app.route('/ingredients').delete(jwtVerification, async (req, res, next) => {
+      try {
+        const data = await ingredientController.deleteIngredient(req.body)
+        res.json(data)
+        res.end()
+      } catch (err) {
+        return next(err)
+      }
+    })
+
+    this.app.use(errorHandler)
+  }
+  start(port?: number): void {
+    this.app.listen(port || conf.port, () => {
+      console.log(`Shoupifly web server listening on port ${conf.port}`)
+    })
+  }
+}

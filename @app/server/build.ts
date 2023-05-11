@@ -8,6 +8,7 @@ const build = async () =>
     outbase: 'src',
     sourcemap: 'both',
     target: 'ES2020',
-    format: 'cjs'
+    format: 'cjs',
+    
   })
 build()

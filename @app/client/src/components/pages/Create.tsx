@@ -1,19 +1,23 @@
-import { useEffect, useContext, useState } from 'react'
-import * as apiService from '../../services/apiService'
+import { RecipeDtoType } from '@dishcover/shared/types/resources/Recipe'
+import { Box, Dialog } from '@mui/material'
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSnapshot } from 'valtio'
+
 import UserContext from '../../contexts/UserContext'
-import { RecipeDtoType } from '@dishcover/shared'
-import RecipeApp from '../templates/RecipeApp'
-import { Dialog } from '@mui/material'
-import RecipeForm from '../organisms/RecipeForm'
-import RecipeCardCreateButton from '../atoms/recipe/RecipeCreateButton'
+import * as apiService from '../../services/apiService'
 import * as store from '../../store'
+import RecipeCardCreateButton from '../atoms/recipe/RecipeCreateButton'
+import RecipeForm from '../organisms/RecipeForm'
 import Layout from '../templates/Layout'
+import RecipeApp from '../templates/RecipeApp'
 
 export default function Create() {
   const userContext = useContext(UserContext)
+  const snap = useSnapshot(store.state) as typeof store.state
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeDtoType | null>(null)
   const [open, setOpen] = useState(false)
-
+  const navigate = useNavigate()
   const openModal = () => {
     setOpen(true)
   }
@@ -21,46 +25,51 @@ export default function Create() {
     setSelectedRecipe(null)
     setOpen(false)
   }
+
+  useEffect(() => {
+    if (!userContext.getConnectedUser()) {
+      navigate('/login')
+    }
+  }, [navigate, userContext])
+
   useEffect(() => {
     const fetchRecipes = async () => {
-      if (userContext.connectedUser != null) {
-        const { data, error } = await apiService.retrieveUserRecipes(
-          userContext.connectedUser.token
-        )
+      const token = userContext.getConnectedUser()?.token
+      if (token) {
+        const { data, error } = await apiService.retrieveUserRecipes(token)
         if (!error && data) {
           store.setRecipes(data)
         }
       }
     }
     fetchRecipes()
-  }, [userContext.connectedUser])
+  }, [userContext])
+
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      const { data, error } = await apiService.getIngredients()
+      if (!error && data) {
+        store.setIngredients(data)
+      }
+    }
+    fetchIngredients()
+  }, [])
 
   const onSubmitForm = async (recipe: RecipeDtoType) => {
-    const token = userContext.connectedUser?.token
-    if (token) {
-      if (recipe.id) {
-        const { data, error } = await apiService.updateRecipe(recipe, token)
-        if (!error && data) {
-          store.updateRecipe(data)
-        }
-      } else {
-        const { data, error } = await apiService.createRecipe(recipe, token)
-        if (!error && data) {
-          store.addRecipe(data)
-        }
-      }
-      closeModal()
-      return
-    }
-    throw Error('You must be logged in to create a recipe')
+    store.upsertRecipe(recipe)
+    setSelectedRecipe(null)
+    closeModal()
+    return
   }
 
   const onClickDelete = async (recipe: RecipeDtoType) => {
-    const token = userContext.connectedUser?.token
-    if (token) {
-      const { data, error } = await apiService.deleteRecipe(recipe, token)
-      if (!error && data) {
-        store.deleteRecipe(data)
+    const token = userContext.getConnectedUser()?.token
+    if (token && recipe.id) {
+      const { error } = await apiService.deleteRecipe({ id: recipe.id }, token)
+
+      if (!error) {
+        console.log('recipe deleted')
+        store.deleteRecipe(recipe.id)
       }
     }
   }
@@ -77,17 +86,21 @@ export default function Create() {
 
   return (
     <Layout>
-      <Dialog open={open} onClose={closeModal}>
-        <RecipeForm create={!!selectedRecipe} recipe={selectedRecipe} onSubmit={onSubmitForm} />
+      <Dialog fullWidth open={open} onClose={closeModal}>
+        <RecipeForm recipe={selectedRecipe} onSubmit={onSubmitForm} />
       </Dialog>
-      <RecipeCardCreateButton onClick={openCreateForm}>Create a new Recipe</RecipeCardCreateButton>
-      <RecipeApp
-        recipes={store.state.recipes}
-        cardActionCallbacks={{
-          onClickDelete,
-          onClickEdit
-        }}
-      />
+      <Box sx={{ textAlign: 'center' }}>
+        <RecipeCardCreateButton onClick={openCreateForm}>
+          Create a new Recipe
+        </RecipeCardCreateButton>
+        <RecipeApp
+          recipes={snap.recipes}
+          cardActionCallbacks={{
+            onClickDelete,
+            onClickEdit
+          }}
+        />
+      </Box>
     </Layout>
   )
 }

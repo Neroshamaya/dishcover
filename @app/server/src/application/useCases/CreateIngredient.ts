@@ -1,16 +1,14 @@
+import { CreateIngredientResponseBody } from '@dishcover/shared/types/responses'
+import Ingredient from '../../domain/models/Ingredient'
 import type UseCase from '../../domain/types/IUseCase'
-import type { IPresenter } from '../../domain/types/IPresenter'
-import { IngredientDtoType } from '@dishcover/shared'
 import IngredientRepository from '../repositories/IngredientRepository'
+import { IngredientDtoType } from '@dishcover/shared/types/resources'
 
-export class CreateIngredient<OutputType> implements UseCase<IngredientDtoType> {
-  constructor(
-    private ingredientRepository: IngredientRepository,
-    private presenter: IPresenter<IngredientDtoType, OutputType>
-  ) {}
+export class CreateIngredient<OutputType> implements UseCase<Ingredient> {
+  constructor(private ingredientRepository: IngredientRepository) {}
 
-  async execute(newIngredient: IngredientDtoType) {
+  async execute(newIngredient: Ingredient): Promise<OutputType | CreateIngredientResponseBody> {
     const ingredient = await this.ingredientRepository.create(newIngredient)
-    return this.presenter.present(ingredient.getDto())
+    return ingredient.toResponse()
   }
 }
