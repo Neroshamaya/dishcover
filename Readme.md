@@ -6,7 +6,8 @@ An app to edit, create and discover recipes
 
 First, make sure you use the right version of node.js
 
-`nvm install && nvm use`
+`nvm install`
+`nvm use`
 
 `npm install -g pnpm`
 
