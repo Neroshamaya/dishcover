@@ -3,29 +3,35 @@ import { Prisma, PrismaClient } from '@prisma/client'
 import Ingredient from '../../domain/models/Ingredient'
 import IIngredientRepository from '../../domain/types/repository/IIngredientRepository'
 import UniqueConstraintError from '../errors/UniqueConstraintError'
+import { IngredientCreateToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientCreateToPrismaAdapter'
+import { IngredientUpdateToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientUpdateToPrismaAdapter'
+import { IngredientDeleteToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientDeleteToPrismaAdapter'
+
+import {
+  CreateIngredientQuery,
+  UpdateIngredientQuery,
+  DeleteIngredientQuery
+} from '@dishcover/shared/types/requests'
+import { PrismaIngredientToModel } from './adapters/prisma/entities/PrismaIngredientToModel'
 
 export default class IngredientRepository implements IIngredientRepository {
   constructor(private prismaClient: PrismaClient) {}
 
   async getAll(): Promise<Ingredient[]> {
     const ingredients = await this.prismaClient.ingredient.findMany()
-    return ingredients.map((i) => Ingredient.fromPrisma(i))
+    return ingredients.map((i) => PrismaIngredientToModel.adapt(i))
   }
 
-  async delete(inrgedientId: string): Promise<void> {
-    await this.prismaClient.ingredient.delete({
-      where: {
-        id: inrgedientId
-      }
-    })
+  async delete(query: DeleteIngredientQuery): Promise<void> {
+    await this.prismaClient.ingredient.delete(IngredientDeleteToPrismaAdapter.adapt(query))
   }
 
-  async create(newIngredient: Ingredient): Promise<Ingredient> {
+  async create(query: CreateIngredientQuery): Promise<Ingredient> {
     try {
-      const prismaIngredient = await this.prismaClient.ingredient.create({
-        data: newIngredient.toPrismaCreate()
-      })
-      return Ingredient.fromPrisma(prismaIngredient)
+      const prismaIngredient = await this.prismaClient.ingredient.create(
+        IngredientCreateToPrismaAdapter.adapt(query)
+      )
+      return PrismaIngredientToModel.adapt(prismaIngredient)
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -36,13 +42,12 @@ export default class IngredientRepository implements IIngredientRepository {
     }
   }
 
-  async update(ingredient: Ingredient): Promise<Ingredient> {
+  async update(query: UpdateIngredientQuery): Promise<Ingredient> {
     try {
-      const prismaIngredient = await this.prismaClient.ingredient.update({
-        where: { id: ingredient.id?.value },
-        data: ingredient.toPrismaUpdate()
-      })
-      return Ingredient.fromPrisma(prismaIngredient)
+      const prismaIngredient = await this.prismaClient.ingredient.update(
+        IngredientUpdateToPrismaAdapter.adapt(query)
+      )
+      return PrismaIngredientToModel.adapt(prismaIngredient)
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {

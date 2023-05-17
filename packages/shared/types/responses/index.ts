@@ -1,16 +1,26 @@
-import { LoginResponseBody } from './Authentication'
+import { LoginResponse, RegisterResponse } from './Authentication'
 import {
-  CreateIngredientResponseBody,
-  UpdateIngredientResponseBody,
-  GetIngredientsResponseBody
+  CreateIngredientResponse,
+  UpdateIngredientResponse,
+  GetIngredientsResponse
 } from './Ingredient'
-import { CreateRecipeResponseBody, UpdateRecipeResponseBody } from './Recipe'
-
+import { CreateRecipeResponse, UpdateRecipeResponse, GetRecipesResponse } from './Recipe'
+export type ResponseType =
+  | LoginResponse
+  | RegisterResponse
+  | GetRecipesResponse
+  | UpdateIngredientResponse
+  | CreateIngredientResponse
+  | GetIngredientsResponse
+  | CreateRecipeResponse
+  | UpdateRecipeResponse
 export {
-  LoginResponseBody,
-  UpdateIngredientResponseBody,
-  CreateIngredientResponseBody,
-  GetIngredientsResponseBody,
-  CreateRecipeResponseBody,
-  UpdateRecipeResponseBody
+  LoginResponse,
+  RegisterResponse,
+  UpdateIngredientResponse,
+  CreateIngredientResponse,
+  GetIngredientsResponse,
+  CreateRecipeResponse,
+  UpdateRecipeResponse,
+  GetRecipesResponse
 }

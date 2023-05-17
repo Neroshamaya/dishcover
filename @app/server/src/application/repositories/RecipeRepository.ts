@@ -3,55 +3,35 @@ import { Prisma, PrismaClient } from '@prisma/client'
 import Recipe from '../../domain/models/Recipe'
 import IRecipeRepository from '../../domain/types/repository/IRecipeRepository'
 import UniqueConstraintError from '../errors/UniqueConstraintError'
+import { PrismaRecipeToModel } from './adapters/prisma/entities/PrismaRecipeToModel'
+import { RecipeFindManyToPrismaAdapter } from './adapters/prisma/query/recipe/RecipeFindManyToPrismaAdapter'
+import {
+  GetUserRecipesQuery,
+  GetAllRecipesQuery,
+  CreateRecipeQuery,
+  DeleteRecipeQuery,
+  UpdateRecipeQuery
+} from '@dishcover/shared/types/requests'
+import { RecipeCreateToPrismaAdapter } from './adapters/prisma/query/recipe/RecipeCreateToPrismaAdapter'
+import { RecipeDeleteToPrismaAdapter } from './adapters/prisma/query/recipe/RecipeDeleteToPrismaAdapter'
+import { RecipeUpdateToPrismaAdapter } from './adapters/prisma/query/recipe/RecipeUpdateToPrismaAdapter'
 
 export default class RecipeRepository implements IRecipeRepository {
   constructor(private prismaClient: PrismaClient) {}
-  async retrieveAll() {
-    const recipes = await this.prismaClient.recipe.findMany({
-      include: {
-        ingredients: {
-          include: {
-            details: true
-          }
-        },
-        author: true
-      }
-    })
 
-    return recipes.map((recipe) => Recipe.fromPrisma(recipe))
+  async retrieveAll(query: GetAllRecipesQuery | GetUserRecipesQuery) {
+    const recipes = await this.prismaClient.recipe.findMany(
+      RecipeFindManyToPrismaAdapter.adapt(query)
+    )
+    return recipes.map((recipe) => PrismaRecipeToModel.adapt(recipe))
   }
 
-  async retrieveAllFromUser(userId: string) {
-    const recipes = await this.prismaClient.recipe.findMany({
-      where: {
-        authorId: userId
-      },
-      include: {
-        ingredients: {
-          include: {
-            details: true
-          }
-        },
-        author: true
-      }
-    })
-    return recipes.map((recipe) => Recipe.fromPrisma(recipe))
-  }
-
-  async createRecipe(recipe: Recipe): Promise<Recipe> {
+  async createRecipe(query: CreateRecipeQuery): Promise<Recipe> {
     try {
-      const prismaRecipe = await this.prismaClient.recipe.create({
-        data: recipe.toPrismaCreate(),
-        include: {
-          ingredients: {
-            include: {
-              details: true
-            }
-          },
-          author: true
-        }
-      })
-      return Recipe.fromPrisma(prismaRecipe)
+      const prismaRecipe = await this.prismaClient.recipe.create(
+        RecipeCreateToPrismaAdapter.adapt(query)
+      )
+      return PrismaRecipeToModel.adapt(prismaRecipe)
     } catch (error: unknown) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -62,31 +42,16 @@ export default class RecipeRepository implements IRecipeRepository {
     }
   }
 
-  async deleteRecipe(recipeId: string): Promise<void> {
-    await this.prismaClient.recipe.delete({
-      where: {
-        id: recipeId
-      }
-    })
+  async deleteRecipe(query: DeleteRecipeQuery): Promise<void> {
+    await this.prismaClient.recipe.delete(RecipeDeleteToPrismaAdapter.adapt(query))
   }
 
-  async updateRecipe(recipe: Recipe): Promise<Recipe> {
+  async updateRecipe(query: UpdateRecipeQuery): Promise<Recipe> {
     try {
-      const prismaRecipe = await this.prismaClient.recipe.update({
-        where: {
-          id: recipe.id?.value
-        },
-        include: {
-          ingredients: {
-            include: {
-              details: true
-            }
-          },
-          author: true
-        },
-        data: recipe.toPrismaUpdate()
-      })
-      return Recipe.fromPrisma(prismaRecipe)
+      const prismaRecipe = await this.prismaClient.recipe.update(
+        RecipeUpdateToPrismaAdapter.adapt(query)
+      )
+      return PrismaRecipeToModel.adapt(prismaRecipe)
     } catch (error: unknown) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {

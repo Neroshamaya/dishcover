@@ -1,11 +1,15 @@
-import z from 'zod'
+import z, { ZodSchema } from 'zod'
 import { ObjectId } from 'bson'
 import { baseRecipeIngredientSchema } from '../resources/RecipeIngredient'
-
-export const CreateRecipeIngredientSchema = baseRecipeIngredientSchema.extend({
+import { CreateRecipeIngredientQuery } from '../../types/requests'
+export const CreateRecipeIngredientSchema: ZodSchema<
+  CreateRecipeIngredientQuery,
+  z.ZodTypeDef,
+  CreateRecipeIngredientQuery
+> = baseRecipeIngredientSchema.extend({
   id: z
     .string()
     .refine((id) => ObjectId.isValid(id))
     .optional(),
-  recipeId: z.string().optional()
+  recipeId: z.string()
 })

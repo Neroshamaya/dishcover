@@ -1,4 +1,8 @@
-import { CreateRecipeQuerySchema, DeleteRecipeQuerySchema } from '../../schemas/requests/Recipe'
+import {
+  CreateRecipeQuerySchema,
+  DeleteRecipeQuerySchema,
+  UpdateRecipeQuerySchema
+} from '../../schemas/requests/Recipe'
 import { Overwrite } from 'utility-types'
 
 import z from 'zod'
@@ -7,16 +11,14 @@ import { CreateRecipeIngredientQuery } from './RecipeIngredient'
 import { GetUserRecipesQuerySchema } from '../../schemas/requests/Recipe'
 import { RecipeIngredientDtoType } from '../resources'
 
-export type CreateRecipeQuery = Overwrite<
+export type CreateRecipeQuery = Omit<
   z.infer<typeof CreateRecipeQuerySchema> & {
-    recipeIngredients: (CreateRecipeIngredientQuery | RecipeIngredientDtoType)[]
+    recipeIngredients: CreateRecipeIngredientQuery[]
   },
-  { kind: 'CreateRecipeQuery' }
+  'updated' | 'created' | 'id'
 >
 
-export type UpdateRecipeQuery = Overwrite<CreateRecipeQuery, { kind: 'UpdateRecipeQuery' }>
+export type UpdateRecipeQuery = z.infer<typeof UpdateRecipeQuerySchema>
 export type DeleteRecipeQuery = z.infer<typeof DeleteRecipeQuerySchema>
-export type GetUserRecipesQuery = Overwrite<
-  z.infer<typeof GetUserRecipesQuerySchema>,
-  { kind: 'GetUserRecipesQuery' }
->
+export type GetAllRecipesQuery = Record<string, never>
+export type GetUserRecipesQuery = z.infer<typeof GetUserRecipesQuerySchema>

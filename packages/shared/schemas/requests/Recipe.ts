@@ -17,13 +17,11 @@ export const GetUserRecipesQuerySchema = z.object({
 })
 
 export const UpdateRecipeQuerySchema = RecipeSchema.extend({
-  recipeIngredients: z
-    .lazy(() =>
-      CreateRecipeIngredientSchema.array().min(1, 'you need to add at least 1 ingredient')
-    )
-    .or(
-      z.lazy(() => RecipeIngredientSchema.array().min(1, 'you need to add at least 1 ingredient'))
-    )
+  recipeIngredients: z.lazy(() =>
+    z
+      .array(CreateRecipeIngredientSchema.or(RecipeIngredientSchema))
+      .min(1, 'you need to add at least 1 ingredient')
+  )
 })
 
 export const DeleteRecipeQuerySchema = z.object({

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { ZodSchema, z } from 'zod'
 import { ObjectId } from 'bson'
 import { IngredientSchema } from './Ingredient'
 import { RecipeIngredientDtoType } from '../../types/resources/RecipeIngredient'

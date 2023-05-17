@@ -1,5 +1,7 @@
 import { RecipeDtoType } from '../resources/Recipe'
 
-export type CreateRecipeResponseBody = RecipeDtoType
+export type CreateRecipeResponse = RecipeDtoType
 
-export type UpdateRecipeResponseBody = RecipeDtoType
+export type UpdateRecipeResponse = RecipeDtoType
+
+export type GetRecipesResponse = RecipeDtoType[]

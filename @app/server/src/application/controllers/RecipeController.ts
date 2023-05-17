@@ -6,34 +6,41 @@ import { CreateRecipeQuery, UpdateRecipeQuery } from '@dishcover/shared/types/re
 
 import ValidationError from '../errors/ValidationError'
 import type RecipeRepository from '../repositories/RecipeRepository'
-import { CreateRecipe } from '../useCases/CreateRecipe'
-import { DeleteRecipe } from '../useCases/DeleteRecipe'
-import { GetAllRecipes } from '../useCases/GetAllRecipes'
-import { GetPersonalRecipes } from '../useCases/GetPersonalRecipes'
-import { UpdateRecipe } from '../useCases/UpdateRecipe'
+import { CreateRecipe } from '../../domain/useCases/CreateRecipe'
+import { DeleteRecipe } from '../../domain/useCases/DeleteRecipe'
+import { GetAllRecipes } from '../../domain/useCases/GetAllRecipes'
+import { GetPersonalRecipes } from '../../domain/useCases/GetPersonalRecipes'
+import { UpdateRecipe } from '../../domain/useCases/UpdateRecipe'
+
+import { RecipePresenter } from '../presenters/RecipePresenter'
+import { RecipesPresenter } from '../presenters/RecipesPresenter'
 
 export default class RecipeController {
-  constructor(private recipeRepository: RecipeRepository) {}
+  constructor(
+    private recipeRepository: RecipeRepository,
+    private recipePresenter: RecipePresenter,
+    private recipesPresenter: RecipesPresenter
+  ) {}
 
   async retrieveAllFromUser(args: unknown) {
     const result = GetUserRecipesQuerySchema.safeParse(args)
     if (!result.success) throw new ValidationError(result.error)
-    const useCase = new GetPersonalRecipes(this.recipeRepository)
+    const useCase = new GetPersonalRecipes(this.recipeRepository, this.recipesPresenter)
     const response = await useCase.execute(result.data)
     return response
   }
 
   async retrieveAll() {
-    const useCase = new GetAllRecipes(this.recipeRepository)
-    const response = await useCase.execute()
+    const useCase = new GetAllRecipes(this.recipeRepository, this.recipesPresenter)
+    const response = await useCase.execute({})
     return response
   }
 
   async createRecipe(args: unknown) {
     const result = CreateRecipeQuerySchema.safeParse(args)
     if (!result.success) throw new ValidationError(result.error)
-    const useCase = new CreateRecipe(this.recipeRepository)
-    const response = await useCase.execute(result.data as CreateRecipeQuery)
+    const useCase = new CreateRecipe(this.recipeRepository, this.recipePresenter)
+    const response = await useCase.execute(result.data)
     return response
   }
 
@@ -47,7 +54,7 @@ export default class RecipeController {
   async updateRecipe(args: unknown) {
     const result = UpdateRecipeQuerySchema.safeParse(args)
     if (!result.success) throw new ValidationError(result.error)
-    const useCase = new UpdateRecipe(this.recipeRepository)
+    const useCase = new UpdateRecipe(this.recipeRepository, this.recipePresenter)
     const response = await useCase.execute(result.data)
     return response
   }
