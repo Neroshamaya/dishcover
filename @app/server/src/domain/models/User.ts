@@ -1,9 +1,5 @@
-import Prisma, { Prisma as PrismaClass } from '@prisma/client'
-
 import Email from '../valueObjects/Email'
 import Id from '../valueObjects/Id'
-import { LoginQuery, RegisterQuery } from '@dishcover/shared/types/requests'
-import { UserDtoType } from '@dishcover/shared/types/resources'
 
 interface UserParams {
   id: Id

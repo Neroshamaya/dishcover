@@ -1,11 +1,11 @@
-import { UpdateIngredientResponse } from '@dishcover/shared/types/responses'
 import { UpdateIngredientQuery } from '@dishcover/shared/types/requests'
-import Ingredient from '../models/Ingredient'
-import type UseCase from '../types/IUseCase'
-import IngredientRepository from '../../application/repositories/IngredientRepository'
-import { IngredientDtoType } from '@dishcover/shared/types/resources'
+import { UpdateIngredientResponse } from '@dishcover/shared/types/responses'
+
 import { Ipresenter } from '@/domain/types/IPresenter'
 import IIngredientRepository from '@/domain/types/repository/IIngredientRepository'
+
+import Ingredient from '../models/Ingredient'
+import type UseCase from '../types/IUseCase'
 
 export type UpdateIngredientExecResponse = Ingredient
 

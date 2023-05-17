@@ -1,10 +1,4 @@
-import {
-  GetAllRecipesQuery,
-  GetUserRecipesQuery,
-  CreateRecipeIngredientQuery,
-  LoginQuery
-} from '@dishcover/shared/types/requests'
-import { Prisma } from '@prisma/client'
+import { LoginQuery } from '@dishcover/shared/types/requests'
 
 export class UserFindOneToPrismaAdapter {
   static adapt({ email }: LoginQuery) {

@@ -1,10 +1,9 @@
+import { RegisterQuery } from '@dishcover/shared/types/requests'
 import bcrypt from 'bcrypt'
 
 import User from '../../domain/models/User'
 import type { IRegistrationStrategy } from '../../domain/types/strategy/IRegistrationStrategy'
-import Email from '../../domain/valueObjects/Email'
 import UserRepository from '../repositories/UserRepository'
-import { Query, RegisterQuery } from '@dishcover/shared/types/requests'
 
 export default class EmailRegistrationStrategy implements IRegistrationStrategy {
   constructor(private userRepository: UserRepository) {}

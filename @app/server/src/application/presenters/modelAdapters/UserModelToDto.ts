@@ -1,7 +1,6 @@
-import User from '@/domain/models/User'
-import { CreateIngredientQuery } from '@dishcover/shared/types/requests'
 import { UserDtoType } from '@dishcover/shared/types/resources'
-import { Prisma, Ingredient as PrismaIngredient } from '@prisma/client'
+
+import User from '@/domain/models/User'
 export class UserModelToDto {
   static adapt(user: User): UserDtoType {
     {

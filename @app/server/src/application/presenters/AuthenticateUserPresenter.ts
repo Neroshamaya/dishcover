@@ -1,6 +1,7 @@
-import { Ipresenter } from '@/domain/types/IPresenter'
-import { UserDtoType } from '@dishcover/shared/types/resources'
 import { LoginResponse } from '@dishcover/shared/types/responses/Authentication'
+
+import { Ipresenter } from '@/domain/types/IPresenter'
+
 import { AuthenticateUserExecResponse } from '../../domain/useCases/AuthenticateUser'
 import { UserModelToDto } from './modelAdapters/UserModelToDto'
 

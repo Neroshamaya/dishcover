@@ -1,5 +1,3 @@
-import { exit } from 'process'
-
 export const localHostDynamicOrigin = (
   requestOrigin: string | undefined,
   callback: (err: Error | null, origin?: boolean) => void

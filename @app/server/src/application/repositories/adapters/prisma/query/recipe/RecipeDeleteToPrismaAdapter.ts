@@ -1,5 +1,4 @@
-import { DeleteIngredientQuery, DeleteRecipeQuery } from '@dishcover/shared/types/requests'
-import { Prisma } from '@prisma/client'
+import { DeleteRecipeQuery } from '@dishcover/shared/types/requests'
 
 export class RecipeDeleteToPrismaAdapter {
   static adapt({ id }: DeleteRecipeQuery) {

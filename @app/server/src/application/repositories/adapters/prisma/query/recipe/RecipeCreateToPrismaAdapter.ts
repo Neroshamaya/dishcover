@@ -1,9 +1,5 @@
-import {
-  CreateRecipeQuery,
-  GetAllRecipesQuery,
-  GetUserRecipesQuery
-} from '@dishcover/shared/types/requests'
-import { Prisma } from '@prisma/client'
+import { CreateRecipeQuery } from '@dishcover/shared/types/requests'
+
 import { RecipeIngredientCreateToPrismaAdapter } from '../recipeIngredient/RecipeIngredientCreateToPrismaAdapter'
 
 export class RecipeCreateToPrismaAdapter {

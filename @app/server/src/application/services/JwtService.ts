@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken'
 
-import { tokenSecret } from '../../infrastructure/configuration'
 import { IJwtService } from '@/domain/types/IJwtService'
+
+import { tokenSecret } from '../../infrastructure/configuration'
 
 export default class JwtService implements IJwtService {
   generateToken(payload: Record<string, unknown>) {

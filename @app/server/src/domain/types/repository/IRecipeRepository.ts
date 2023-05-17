@@ -1,11 +1,12 @@
-import type Recipe from '../../models/Recipe'
 import {
   CreateRecipeQuery,
+  DeleteRecipeQuery,
   GetAllRecipesQuery,
   GetUserRecipesQuery,
-  DeleteRecipeQuery,
   UpdateRecipeQuery
 } from '@dishcover/shared/types/requests'
+
+import type Recipe from '../../models/Recipe'
 
 export default interface IRecipeRepository {
   retrieveAll(query: GetAllRecipesQuery | GetUserRecipesQuery): Promise<Recipe[]>

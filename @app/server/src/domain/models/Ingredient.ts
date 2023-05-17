@@ -1,10 +1,6 @@
-import { CreateIngredientQuery } from '@dishcover/shared/types/requests'
-import PrismaClient, { Prisma, User as PrismaUser } from '@prisma/client'
-
 import Id from '../valueObjects/Id'
 import Uri from '../valueObjects/Uri'
 import User from './User'
-import { IngredientDtoType, UserDtoType } from '@dishcover/shared/types/resources'
 
 interface IngredientParams {
   readonly id: Id

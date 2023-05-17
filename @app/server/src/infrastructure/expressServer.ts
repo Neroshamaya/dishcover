@@ -1,3 +1,4 @@
+import { AwilixContainer } from 'awilix'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Express } from 'express'
@@ -6,15 +7,12 @@ import helmet from 'helmet'
 import type AuthenticationController from '../application/controllers/AuthenticationController'
 import type IngredientController from '../application/controllers/IngredientController'
 import type RecipeController from '../application/controllers/RecipeController'
-
 import * as conf from './configuration'
 import { localHostDynamicOrigin } from './corsOrigin'
 import { apiKeyVerification } from './expressMiddlewares/apiKeyVerification'
 import { errorHandler } from './expressMiddlewares/errorHandler'
 import { jwtVerification } from './expressMiddlewares/jwtVerification'
 import logRequest from './expressMiddlewares/logRequest'
-import { AwilixContainer } from 'awilix'
-import { exit } from 'process'
 
 export class ExpressApplication {
   app: Express

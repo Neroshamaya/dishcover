@@ -1,11 +1,9 @@
-import { Ipresenter } from '@/domain/types/IPresenter'
-import { UserDtoType } from '@dishcover/shared/types/resources'
-import { LoginResponse } from '@dishcover/shared/types/responses/Authentication'
-import { CreateIngredientResponse, GetIngredientsResponse } from '@dishcover/shared/types/responses'
-import { UserModelToDto } from './modelAdapters/UserModelToDto'
-import { IngredientModelToDto } from './modelAdapters/IngredientModelToDto'
+import { GetIngredientsResponse } from '@dishcover/shared/types/responses'
+
 import Ingredient from '@/domain/models/Ingredient'
-import { GetIngredients } from '../../domain/useCases/GetIngredients'
+import { Ipresenter } from '@/domain/types/IPresenter'
+
+import { IngredientModelToDto } from './modelAdapters/IngredientModelToDto'
 
 export class IngredientsPresenter implements Ipresenter<Ingredient[], GetIngredientsResponse> {
   present(ingredients: Ingredient[]) {

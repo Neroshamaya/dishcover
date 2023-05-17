@@ -1,18 +1,17 @@
 import {
   CreateIngredientSchema,
-  UpdateIngredientSchema,
-  DeleteIngredientSchema
+  DeleteIngredientSchema,
+  UpdateIngredientSchema
 } from '@dishcover/shared/schemas/requests/Ingredient'
 
-import Ingredient from '../../domain/models/Ingredient'
-import ValidationError from '../errors/ValidationError'
-import IngredientRepository from '../repositories/IngredientRepository'
 import { CreateIngredient } from '../../domain/useCases/CreateIngredient'
-import { UpdateIngredient } from '../../domain/useCases/UpdateIngredient'
-import { GetIngredients } from '../../domain/useCases/GetIngredients'
 import { DeleteIngredient } from '../../domain/useCases/DeleteIngredient'
-import { IngredientsPresenter } from '../presenters/IngredientsPresenter'
+import { GetIngredients } from '../../domain/useCases/GetIngredients'
+import { UpdateIngredient } from '../../domain/useCases/UpdateIngredient'
+import ValidationError from '../errors/ValidationError'
 import { IngredientPresenter } from '../presenters/IngredientPresenter'
+import { IngredientsPresenter } from '../presenters/IngredientsPresenter'
+import IngredientRepository from '../repositories/IngredientRepository'
 
 export default class IngredientController {
   constructor(

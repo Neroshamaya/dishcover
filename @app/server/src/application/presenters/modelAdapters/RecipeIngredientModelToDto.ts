@@ -1,10 +1,7 @@
-import User from '@/domain/models/User'
-import { CreateRecipeIngredientQuery } from '@dishcover/shared/types/requests'
-import { UserDtoType } from '@dishcover/shared/types/resources'
-import { Prisma, RecipeIngredient as PrismaRecipeIngredient } from '@prisma/client'
-import RecipeIngredient from '@/domain/models/RecipeIngredient'
 import { RecipeIngredientDtoType } from '@dishcover/shared/types/resources'
-import { UserModelToDto } from './UserModelToDto'
+
+import RecipeIngredient from '@/domain/models/RecipeIngredient'
+
 import { IngredientModelToDto } from './IngredientModelToDto'
 
 export class RecipeIngredientModelToDto {

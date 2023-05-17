@@ -1,5 +1,5 @@
-import { CreateIngredientQuery } from '@dishcover/shared/types/requests'
-import { Prisma, Ingredient as PrismaIngredient } from '@prisma/client'
+import { Ingredient as PrismaIngredient } from '@prisma/client'
+
 import Ingredient from '@/domain/models/Ingredient'
 import Id from '@/domain/valueObjects/Id'
 Id

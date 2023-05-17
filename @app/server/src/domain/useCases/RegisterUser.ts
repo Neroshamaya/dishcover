@@ -1,12 +1,12 @@
-import type { LoginQuery } from '@dishcover/shared/types/requests/Authentication'
-
-import User from '../models/User'
-import { IRegistrationStrategy } from '../types/strategy/IRegistrationStrategy'
-import type UseCase from '../types/IUseCase'
-import { IJwtService } from '@/domain/types/IJwtService'
 import { RegisterQuery } from '@dishcover/shared/types/requests'
 import { RegisterResponse } from '@dishcover/shared/types/responses'
+
+import { IJwtService } from '@/domain/types/IJwtService'
 import { Ipresenter } from '@/domain/types/IPresenter'
+
+import User from '../models/User'
+import type UseCase from '../types/IUseCase'
+import { IRegistrationStrategy } from '../types/strategy/IRegistrationStrategy'
 
 export interface RegisterUserResponse {
   user: User

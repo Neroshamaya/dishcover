@@ -1,9 +1,4 @@
-import {
-  GetAllRecipesQuery,
-  GetUserRecipesQuery,
-  CreateRecipeIngredientQuery
-} from '@dishcover/shared/types/requests'
-import { Prisma } from '@prisma/client'
+import { CreateRecipeIngredientQuery } from '@dishcover/shared/types/requests'
 
 export class RecipeIngredientCreateToPrismaAdapter {
   static adapt({ ingredientId, quantity, recipeId }: CreateRecipeIngredientQuery) {

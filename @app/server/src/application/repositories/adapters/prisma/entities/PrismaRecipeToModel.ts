@@ -1,18 +1,17 @@
-import { CreateIngredientQuery } from '@dishcover/shared/types/requests'
 import {
-  Prisma,
-  Recipe as PrismaRecipe,
-  User as PrismaUser,
   Ingredient as PrismaIngredient,
-  RecipeIngredient as PrismaRecipeIngredient
+  Recipe as PrismaRecipe,
+  RecipeIngredient as PrismaRecipeIngredient,
+  User as PrismaUser
 } from '@prisma/client'
-import Ingredient from '@/domain/models/Ingredient'
+
 import Id from '@/domain/valueObjects/Id'
 Id
-import Uri from '@/domain/valueObjects/Uri'
 import Recipe from '@/domain/models/Recipe'
-import { PrismaUserToModel } from './PrismaUserToModel'
+import Uri from '@/domain/valueObjects/Uri'
+
 import { PrismaRecipeIngredientToModel } from './PrismaRecipeIngredientToModel'
+import { PrismaUserToModel } from './PrismaUserToModel'
 
 export class PrismaRecipeToModel {
   static adapt(

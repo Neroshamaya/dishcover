@@ -1,10 +1,10 @@
-import { IngredientDtoType } from '@dishcover/shared/types/resources'
 import { GetIngredientsResponse } from '@dishcover/shared/types/responses'
-import type UseCase from '../types/IUseCase'
-import IngredientRepository from '../../application/repositories/IngredientRepository'
-import IIngredientRepository from '../types/repository/IIngredientRepository'
-import { Ipresenter } from '../types/IPresenter'
+
 import Ingredient from '@/domain/models/Ingredient'
+
+import { Ipresenter } from '../types/IPresenter'
+import type UseCase from '../types/IUseCase'
+import IIngredientRepository from '../types/repository/IIngredientRepository'
 
 export type GetIngredientsExecResponse = Ingredient[]
 

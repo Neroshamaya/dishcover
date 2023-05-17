@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, User } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
 
 function sleep(ms: number) {
   return new Promise((resolve) => {
@@ -77,7 +77,9 @@ const load = async () => {
           }
         }
       })
-    } catch (error) {}
+    } catch (error) {
+      continue
+    }
   }
 }
 

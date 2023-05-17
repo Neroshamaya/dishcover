@@ -3,14 +3,13 @@ import {
   RegisterQuerySchema
 } from '@dishcover/shared/schemas/requests/Authentication'
 
+import { AuthenticateUser } from '../../domain/useCases/AuthenticateUser'
+import { RegisterUser } from '../../domain/useCases/RegisterUser'
 import ValidationError from '../errors/ValidationError'
+import { AuthenticateUserPresenter } from '../presenters/AuthenticateUserPresenter'
 import JwtService from '../services/JwtService'
 import type EmailAuthenticationStrategy from '../strategies/EmailAuthenticationStrategy'
 import type EmailRegistrationStrategy from '../strategies/EmailRegistrationStrategy'
-import { AuthenticateUser } from '../../domain/useCases/AuthenticateUser'
-import { RegisterUser } from '../../domain/useCases/RegisterUser'
-import { AuthenticateUserPresenter } from '../presenters/AuthenticateUserPresenter'
-import { LoginResponse } from '@dishcover/shared/types/responses/Authentication'
 
 export default class AuthenticationController {
   constructor(

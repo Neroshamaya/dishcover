@@ -2,18 +2,16 @@ import { GetUserRecipesQuerySchema } from '@dishcover/shared/schemas/requests/Re
 import { CreateRecipeQuerySchema } from '@dishcover/shared/schemas/requests/Recipe'
 import { UpdateRecipeQuerySchema } from '@dishcover/shared/schemas/requests/Recipe'
 import { DeleteRecipeQuerySchema } from '@dishcover/shared/schemas/requests/Recipe'
-import { CreateRecipeQuery, UpdateRecipeQuery } from '@dishcover/shared/types/requests/Recipe'
 
-import ValidationError from '../errors/ValidationError'
-import type RecipeRepository from '../repositories/RecipeRepository'
 import { CreateRecipe } from '../../domain/useCases/CreateRecipe'
 import { DeleteRecipe } from '../../domain/useCases/DeleteRecipe'
 import { GetAllRecipes } from '../../domain/useCases/GetAllRecipes'
 import { GetPersonalRecipes } from '../../domain/useCases/GetPersonalRecipes'
 import { UpdateRecipe } from '../../domain/useCases/UpdateRecipe'
-
+import ValidationError from '../errors/ValidationError'
 import { RecipePresenter } from '../presenters/RecipePresenter'
 import { RecipesPresenter } from '../presenters/RecipesPresenter'
+import type RecipeRepository from '../repositories/RecipeRepository'
 
 export default class RecipeController {
   constructor(

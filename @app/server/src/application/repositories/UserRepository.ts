@@ -1,13 +1,11 @@
+import { LoginQuery } from '@dishcover/shared/types/requests'
 import { Prisma, PrismaClient } from '@prisma/client'
 
-import User from '../../domain/models/User'
 import { IUserRepository } from '../../domain/types/repository/IUserRepository'
 import UniqueConstraintError from '../errors/UniqueConstraintError'
-import Email from '@/domain/valueObjects/Email'
-import { LoginQuery, RegisterQuery } from '@dishcover/shared/types/requests'
-import { UserFindOneToPrismaAdapter } from './adapters/prisma/query/user/UserFindOneToPrismaAdapter'
-import { UserCreateToPrismaAdapter } from './adapters/prisma/query/user/UserCreateToPrismaAdapter'
 import { PrismaUserToModel } from './adapters/prisma/entities/PrismaUserToModel'
+import { UserCreateToPrismaAdapter } from './adapters/prisma/query/user/UserCreateToPrismaAdapter'
+import { UserFindOneToPrismaAdapter } from './adapters/prisma/query/user/UserFindOneToPrismaAdapter'
 export default class UserRepository implements IUserRepository {
   constructor(private prismaClient: PrismaClient) {}
 

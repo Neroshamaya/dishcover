@@ -1,11 +1,12 @@
 import type { LoginQuery } from '@dishcover/shared/types/requests/Authentication'
-
-import type UseCase from '../types/IUseCase'
-import type { Ipresenter } from '../types/IPresenter'
-import { IAuthenticationStrategy } from '../types/strategy/IAuthenticationStrategy'
 import { LoginResponse } from '@dishcover/shared/types/responses/Authentication'
-import { IJwtService } from '@/domain/types/IJwtService'
+
 import User from '@/domain/models/User'
+import { IJwtService } from '@/domain/types/IJwtService'
+
+import type { Ipresenter } from '../types/IPresenter'
+import type UseCase from '../types/IUseCase'
+import { IAuthenticationStrategy } from '../types/strategy/IAuthenticationStrategy'
 
 export interface AuthenticateUserExecResponse {
   user: User

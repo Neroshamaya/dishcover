@@ -1,7 +1,5 @@
-import PrismaClient, { Prisma } from '@prisma/client'
-import Ingredient from './Ingredient'
 import Id from '../valueObjects/Id'
-import { IngredientDtoType, RecipeIngredientDtoType } from '@dishcover/shared/types/resources'
+import Ingredient from './Ingredient'
 interface RecipeIngredientParams {
   readonly id: Id
   readonly ingredientId: Id

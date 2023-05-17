@@ -1,13 +1,6 @@
-import {
-  CreateRecipeQuery,
-  GetAllRecipesQuery,
-  GetUserRecipesQuery,
-  UpdateRecipeQuery
-} from '@dishcover/shared/types/requests'
-import { Prisma } from '@prisma/client'
-import { RecipeIngredientCreateToPrismaAdapter } from '../recipeIngredient/RecipeIngredientCreateToPrismaAdapter'
-import { RecipeIngredientDtoType } from '@dishcover/shared/types/resources'
+import { UpdateRecipeQuery } from '@dishcover/shared/types/requests'
 import { CreateRecipeIngredientQuery } from '@dishcover/shared/types/requests'
+import { RecipeIngredientDtoType } from '@dishcover/shared/types/resources'
 
 export class RecipeUpdateToPrismaAdapter {
   static adapt({ authorId, description, label, recipeIngredients, image, id }: UpdateRecipeQuery) {

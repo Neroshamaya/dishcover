@@ -1,18 +1,17 @@
+import {
+  CreateIngredientQuery,
+  DeleteIngredientQuery,
+  UpdateIngredientQuery
+} from '@dishcover/shared/types/requests'
 import { Prisma, PrismaClient } from '@prisma/client'
 
 import Ingredient from '../../domain/models/Ingredient'
 import IIngredientRepository from '../../domain/types/repository/IIngredientRepository'
 import UniqueConstraintError from '../errors/UniqueConstraintError'
-import { IngredientCreateToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientCreateToPrismaAdapter'
-import { IngredientUpdateToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientUpdateToPrismaAdapter'
-import { IngredientDeleteToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientDeleteToPrismaAdapter'
-
-import {
-  CreateIngredientQuery,
-  UpdateIngredientQuery,
-  DeleteIngredientQuery
-} from '@dishcover/shared/types/requests'
 import { PrismaIngredientToModel } from './adapters/prisma/entities/PrismaIngredientToModel'
+import { IngredientCreateToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientCreateToPrismaAdapter'
+import { IngredientDeleteToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientDeleteToPrismaAdapter'
+import { IngredientUpdateToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientUpdateToPrismaAdapter'
 
 export default class IngredientRepository implements IIngredientRepository {
   constructor(private prismaClient: PrismaClient) {}

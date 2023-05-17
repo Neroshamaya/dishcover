@@ -1,13 +1,7 @@
-import { CreateRecipeQuery, UpdateRecipeQuery } from '@dishcover/shared/types/requests'
-import Prisma, { Prisma as PrismaClass } from '@prisma/client'
-
 import RecipeIngredient from '../models/RecipeIngredient'
 import User from '../models/User'
-import Email from '../valueObjects/Email'
 import Id from '../valueObjects/Id'
 import Uri from '../valueObjects/Uri'
-import { RecipeDtoType, UserDtoType } from '@dishcover/shared/types/resources'
-import Ingredient from './Ingredient'
 
 interface RecipeParams {
   id: Id
