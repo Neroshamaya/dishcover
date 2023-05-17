@@ -7,15 +7,13 @@ import IRecipeRepository from '@/domain/types/repository/IRecipeRepository'
 import Recipe from '../models/Recipe'
 import type UseCase from '../types/IUseCase'
 
-export type GetPersonalRecipesResponse = Recipe[]
-
-export class GetPersonalRecipes implements UseCase<GetUserRecipesQuery, GetRecipesResponse> {
+export class GetPersonalRecipes implements UseCase<GetUserRecipesQuery> {
   constructor(
     private recipeRepository: IRecipeRepository,
-    private presenter: Ipresenter<GetPersonalRecipesResponse, GetRecipesResponse>
+    private presenter: Ipresenter<Recipe[]>
   ) {}
 
-  async execute(query: GetUserRecipesQuery): Promise<GetRecipesResponse> {
+  async execute(query: GetUserRecipesQuery) {
     return this.presenter.present(await this.recipeRepository.retrieveAll(query))
   }
 }

@@ -13,14 +13,14 @@ export interface RegisterUserResponse {
   token: string
 }
 
-export class RegisterUser implements UseCase<RegisterQuery, RegisterResponse> {
+export class RegisterUser implements UseCase<RegisterQuery> {
   constructor(
     private registrationStrategy: IRegistrationStrategy,
-    private presenter: Ipresenter<RegisterUserResponse, RegisterResponse>,
+    private presenter: Ipresenter<RegisterUserResponse>,
     private jwtService: IJwtService
   ) {}
 
-  async execute(query: { email: string; password: string }): Promise<RegisterResponse> {
+  async execute(query: { email: string; password: string }) {
     const user = await this.registrationStrategy.register(query)
     const token = this.jwtService.generateToken({
       email: user.email.value,

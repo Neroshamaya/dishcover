@@ -6,12 +6,10 @@ import { Ipresenter } from '../types/IPresenter'
 import type UseCase from '../types/IUseCase'
 import IIngredientRepository from '../types/repository/IIngredientRepository'
 
-export type GetIngredientsExecResponse = Ingredient[]
-
-export class GetIngredients implements UseCase<void, GetIngredientsResponse> {
+export class GetIngredients implements UseCase {
   constructor(
     private ingredientRepository: IIngredientRepository,
-    private presenter: Ipresenter<GetIngredientsExecResponse, GetIngredientsResponse>
+    private presenter: Ipresenter<Ingredient[]>
   ) {}
 
   async execute() {

@@ -7,13 +7,8 @@ import IRecipeRepository from '@/domain/types/repository/IRecipeRepository'
 import Recipe from '../models/Recipe'
 import type UseCase from '../types/IUseCase'
 
-export type UpdateRecipeExecResponse = Recipe
-
-export class UpdateRecipe implements UseCase<UpdateRecipeQuery, UpdateRecipeResponse> {
-  constructor(
-    private recipeRepository: IRecipeRepository,
-    private presenter: Ipresenter<UpdateRecipeExecResponse, UpdateRecipeResponse>
-  ) {}
+export class UpdateRecipe implements UseCase<UpdateRecipeQuery> {
+  constructor(private recipeRepository: IRecipeRepository, private presenter: Ipresenter<Recipe>) {}
 
   async execute(query: UpdateRecipeQuery) {
     const recipe = await this.recipeRepository.updateRecipe(query)

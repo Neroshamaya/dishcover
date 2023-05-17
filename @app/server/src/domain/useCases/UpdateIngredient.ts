@@ -7,15 +7,13 @@ import IIngredientRepository from '@/domain/types/repository/IIngredientReposito
 import Ingredient from '../models/Ingredient'
 import type UseCase from '../types/IUseCase'
 
-export type UpdateIngredientExecResponse = Ingredient
-
-export class UpdateIngredient implements UseCase<UpdateIngredientQuery, UpdateIngredientResponse> {
+export class UpdateIngredient implements UseCase<UpdateIngredientQuery> {
   constructor(
     private ingredientRepository: IIngredientRepository,
-    private presenter: Ipresenter<UpdateIngredientExecResponse, UpdateIngredientResponse>
+    private presenter: Ipresenter<Ingredient>
   ) {}
 
-  async execute(query: UpdateIngredientQuery): Promise<UpdateIngredientResponse> {
+  async execute(query: UpdateIngredientQuery) {
     return this.presenter.present(await this.ingredientRepository.update(query))
   }
 }

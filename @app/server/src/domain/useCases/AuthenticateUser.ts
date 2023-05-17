@@ -13,14 +13,14 @@ export interface AuthenticateUserExecResponse {
   token: string
 }
 
-export class AuthenticateUser implements UseCase<LoginQuery, LoginResponse> {
+export class AuthenticateUser implements UseCase<LoginQuery> {
   constructor(
     private authenticationStrategy: IAuthenticationStrategy,
-    private presenter: Ipresenter<AuthenticateUserExecResponse, LoginResponse>,
+    private presenter: Ipresenter<AuthenticateUserExecResponse>,
     private jwtService: IJwtService
   ) {}
 
-  async execute(query: LoginQuery): Promise<LoginResponse> {
+  async execute(query: LoginQuery) {
     const user = await this.authenticationStrategy.authenticate(query)
     const token = this.jwtService.generateToken({
       email: user.email.value,
