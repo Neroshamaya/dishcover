@@ -1,7 +1,7 @@
 import { LoginQuery } from '@dishcover/shared/types/requests'
 import { Prisma, PrismaClient } from '@prisma/client'
 
-import { IUserRepository } from '../../domain/types/repository/IUserRepository'
+import { IUserRepository } from '@/domain/types/repository/IUserRepository'
 import UniqueConstraintError from '../errors/UniqueConstraintError'
 import { PrismaUserToModel } from './adapters/prisma/entities/PrismaUserToModel'
 import { UserCreateToPrismaAdapter } from './adapters/prisma/query/user/UserCreateToPrismaAdapter'

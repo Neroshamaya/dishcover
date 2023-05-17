@@ -3,8 +3,8 @@ import {
   RegisterQuerySchema
 } from '@dishcover/shared/schemas/requests/Authentication'
 
-import { AuthenticateUser } from '../../domain/useCases/AuthenticateUser'
-import { RegisterUser } from '../../domain/useCases/RegisterUser'
+import { AuthenticateUser } from '@/domain/useCases/AuthenticateUser'
+import { RegisterUser } from '@/domain/useCases/RegisterUser'
 import ValidationError from '../errors/ValidationError'
 import { AuthenticateUserPresenter } from '../presenters/AuthenticateUserPresenter'
 import JwtService from '../services/JwtService'

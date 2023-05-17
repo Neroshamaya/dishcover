@@ -4,10 +4,10 @@ import {
   UpdateIngredientSchema
 } from '@dishcover/shared/schemas/requests/Ingredient'
 
-import { CreateIngredient } from '../../domain/useCases/CreateIngredient'
-import { DeleteIngredient } from '../../domain/useCases/DeleteIngredient'
-import { GetIngredients } from '../../domain/useCases/GetIngredients'
-import { UpdateIngredient } from '../../domain/useCases/UpdateIngredient'
+import { CreateIngredient } from '@/domain/useCases/CreateIngredient'
+import { DeleteIngredient } from '@/domain/useCases/DeleteIngredient'
+import { GetIngredients } from '@/domain/useCases/GetIngredients'
+import { UpdateIngredient } from '@/domain/useCases/UpdateIngredient'
 import ValidationError from '../errors/ValidationError'
 import { IngredientPresenter } from '../presenters/IngredientPresenter'
 import { IngredientsPresenter } from '../presenters/IngredientsPresenter'

@@ -1,8 +1,8 @@
 import { LoginQuery } from '@dishcover/shared/types/requests'
 import bcrypt from 'bcrypt'
 
-import User from '../../domain/models/User'
-import type { IAuthenticationStrategy } from '../../domain/types/strategy/IAuthenticationStrategy'
+import User from '@/domain/models/User'
+import type { IAuthenticationStrategy } from '@/domain/types/strategy/IAuthenticationStrategy'
 import WrongEmailPasswordComboError from '../errors/WrongEmailPasswordComboError'
 import UserRepository from '../repositories/UserRepository'
 

@@ -5,8 +5,8 @@ import {
 } from '@dishcover/shared/types/requests'
 import { Prisma, PrismaClient } from '@prisma/client'
 
-import Ingredient from '../../domain/models/Ingredient'
-import IIngredientRepository from '../../domain/types/repository/IIngredientRepository'
+import Ingredient from '@/domain/models/Ingredient'
+import IIngredientRepository from '@/domain/types/repository/IIngredientRepository'
 import UniqueConstraintError from '../errors/UniqueConstraintError'
 import { PrismaIngredientToModel } from './adapters/prisma/entities/PrismaIngredientToModel'
 import { IngredientCreateToPrismaAdapter } from './adapters/prisma/query/ingredient/IngredientCreateToPrismaAdapter'
